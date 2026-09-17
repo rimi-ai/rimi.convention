@@ -100,6 +100,8 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) and [GOVERNANCE.md](GOVERNANCE.md) first
 
 [CC0 1.0](LICENSE): public domain. Use it, copy it, build on it, in open or commercial products, with no permission needed. A citation is appreciated but not required.
 
+Logo and badges composed with [Geist](https://github.com/vercel/geist-font) (SIL Open Font License 1.1).
+
 ## How to cite
 
 See [CITATION.cff](CITATION.cff).
@@ -191,6 +193,8 @@ Une règle est Acceptée après au moins 14 jours de discussion publique, sans o
 ### Licence
 
 [CC0 1.0](LICENSE) : domaine public.
+
+Logo et badges composés avec [Geist](https://github.com/vercel/geist-font) (SIL Open Font License 1.1).
 
 <a id="fr-citer"></a>
 ### Citer
