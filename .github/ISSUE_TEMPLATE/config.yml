@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and ideas / Questions et idées
+    url: https://github.com/rimi-ai/rimi.convention/discussions
+    about: Explore an idea before proposing a rule.

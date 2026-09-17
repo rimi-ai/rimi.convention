@@ -1,0 +1,76 @@
+name: Propose a rule / Proposer une règle
+description: Propose a new convention rule using the rule template.
+title: "[New rule] "
+labels: ["type:new-rule", "status:draft"]
+body:
+  - type: dropdown
+    id: part
+    attributes:
+      label: Part
+      options:
+        - "A — model behaviour (CONV)"
+        - "B — design of prompts and tools (CONC)"
+        - "C — frugality (SOB)"
+        - "Principle (P)"
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: One line.
+    validations:
+      required: true
+  - type: textarea
+    id: situation
+    attributes:
+      label: Situation
+      description: The trigger, described in a verifiable way.
+    validations:
+      required: true
+  - type: textarea
+    id: drift
+    attributes:
+      label: Observed drift
+      description: What LLMs do without the rule. Include an anonymised real example if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: convention
+    attributes:
+      label: Convention
+      description: The MUST / MUST NOT / SHOULD / MAY obligations.
+    validations:
+      required: true
+  - type: input
+    id: announcement
+    attributes:
+      label: Model announcement
+      description: The one-sentence template the LLM says when it applies the rule.
+  - type: textarea
+    id: exceptions
+    attributes:
+      label: Exceptions
+  - type: textarea
+    id: tests
+    attributes:
+      label: Test cases
+      description: At least one dialogue with a conformant and a non-conformant response.
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why this convention rather than another.
+  - type: input
+    id: related
+    attributes:
+      label: Related rules
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmations
+      options:
+        - label: The example is anonymised.
+          required: true
+        - label: I dedicate this contribution to the public domain (CC0 1.0).
+          required: true

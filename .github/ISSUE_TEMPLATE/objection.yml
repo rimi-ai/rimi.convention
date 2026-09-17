@@ -1,0 +1,29 @@
+name: Objection
+description: Object to a rule. An objection must be answered before the rule is Accepted.
+title: "[Objection] "
+labels: ["type:objection"]
+body:
+  - type: input
+    id: rule
+    attributes:
+      label: Rule
+      placeholder: "CONV-012"
+    validations:
+      required: true
+  - type: textarea
+    id: objection
+    attributes:
+      label: Objection
+      description: What is wrong, harmful or unclear.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Counter-example, real case, test result or source.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Amend, split, add an exception, or retire.

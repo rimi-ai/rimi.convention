@@ -1,0 +1,48 @@
+name: Real case / Cas réel
+description: Report a real situation where an LLM guessed, invented, looped or wasted resources.
+title: "[Real case] "
+labels: ["type:real-case"]
+body:
+  - type: markdown
+    attributes:
+      value: "Remove names, phone numbers, emails, booking references, company and system names. Paraphrase if needed. Do not paste production logs."
+  - type: input
+    id: domain
+    attributes:
+      label: Domain
+      description: e.g. travel, finance, health, support, coding.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What the user asked and what the model had available (tools, data).
+    validations:
+      required: true
+  - type: textarea
+    id: response
+    attributes:
+      label: What the model did
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What a conventional response would have been
+  - type: input
+    id: rules
+    attributes:
+      label: Rules concerned (if known)
+      placeholder: "CONV-001, CONC-004…"
+  - type: input
+    id: model
+    attributes:
+      label: Model and provider (optional)
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmations
+      options:
+        - label: This case is anonymised and contains no personal or confidential data.
+          required: true
+        - label: I dedicate this contribution to the public domain (CC0 1.0).
+          required: true

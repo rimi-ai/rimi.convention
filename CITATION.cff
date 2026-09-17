@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use or build on this convention, please cite it as below."
+title: "rimi. — Open Convention for Conversational Reliability of LLMs"
+type: dataset
+authors:
+  - name: "Hiram"
+version: "0.1.0"
+date-released: "2026-09-17"
+license: CC0-1.0
+repository-code: "https://github.com/rimi-ai/rimi.convention"
+url: "https://github.com/rimi-ai/rimi.convention"
+abstract: >-
+  An open, collaborative and testable convention that sets what a large
+  language model does when it would otherwise guess, smooth over or invent:
+  ambiguous answers, conflicting sources, missing data, and resource use.
+  Conformance levels A, AA, AAA with a separate frugality indicator S1, S2, S3.
+keywords:
+  - large language models
+  - conversational AI
+  - reliability
+  - hallucination
+  - responsible AI
+  - frugal AI
+  - convention
+  - consensus
