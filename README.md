@@ -21,7 +21,7 @@
 
 ---
 
-**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
+**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
 
 ## What this is
 
@@ -52,6 +52,21 @@ This repository holds a growing set of such conventions: short, testable rules t
 Rules in Parts A and B carry a type: **invariant** (no protocol choice involved), **default convention** (a system may declare another one) or **informative** (the obligation already exists in law or a public framework). They are opened for discussion in five weekly waves; wave 1 is the core of 15 rules.
 
 The [test protocol](en.md#test-protocol) fixes what is run, how many times and what counts as a pass, and a [mapping table](en.md#mapping-to-existing-frameworks) says rule by rule what is new against OpenAI Model Spec, Microsoft HAX, NIST, OWASP and the AI Act.
+
+## Machine-readable version
+
+Every release publishes `convention.json`, the projection of the text for tools: each rule with its type, status, wave, obligations and the fingerprint of its own text. Latest version at <https://rimi-ai.github.io/rimi.convention/convention.json>, frozen per version at `…/versions/v0.3.0/convention.json`, and attached to each [release](../../releases).
+
+It is signed during the release, with no private key anywhere: Sigstore keyless, the identity being the release workflow itself, the signature recorded in the public Rekor log. Anyone can check it, with the `convention.json.sig` and `convention.json.pem` assets of the release:
+
+```bash
+cosign verify-blob convention.json \
+  --signature convention.json.sig --certificate convention.json.pem \
+  --certificate-identity-regexp '^https://github.com/rimi-ai/rimi.convention/\.github/workflows/release\.yml@refs/tags/' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+[en.md](en.md) stays the source: the file is only its projection, rebuilt by [tools/build_convention_json.py](tools/build_convention_json.py) and checked on every change. If the two ever disagree, the text prevails.
 
 ## Conformance levels
 
@@ -124,7 +139,7 @@ The method comes from audits of production prompts, read as normative texts. Its
 
 **rimi. — pour une IA responsable : fiable, sobre, loyale.** · green friendly
 
-**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
+**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
 
 <a id="fr-en-bref"></a>
 ### En bref
@@ -156,6 +171,22 @@ Un utilisateur répond « oui » à la question « option 1 ou option 2 ? ». Pl
 Les règles des parties A et B portent un type : **invariant** (aucun choix de protocole), **convention par défaut** (un système peut en déclarer une autre) ou **informative** (l'obligation existe déjà dans la loi ou un référentiel public). Elles sont ouvertes à la discussion par lots hebdomadaires ; le lot 1 est le noyau de 15 règles.
 
 Le [protocole de test](fr.md#protocole-de-test) fixe ce qui est exécuté, combien de fois et ce qui compte comme réussite, et une [table de correspondance](fr.md#correspondance-avec-les-cadres-existants) dit, règle par règle, ce qui est nouveau face à l'OpenAI Model Spec, Microsoft HAX, NIST, OWASP et l'AI Act.
+
+<a id="fr-machine"></a>
+### Version lisible par machine
+
+Chaque version publie `convention.json`, la projection du texte à l'usage des outils : chaque règle avec son type, son statut, son lot, ses obligations et l'empreinte de son propre texte. Dernière version sur <https://rimi-ai.github.io/rimi.convention/convention.json>, version figée sur `…/versions/v0.3.0/convention.json`, et fichier joint à chaque [release](../../releases).
+
+Il est signé pendant la publication, sans aucune clé privée : Sigstore en mode keyless, l'identité étant le workflow de release lui-même, la signature inscrite dans le journal public Rekor. N'importe qui peut la vérifier, avec les fichiers `convention.json.sig` et `convention.json.pem` de la release :
+
+```bash
+cosign verify-blob convention.json \
+  --signature convention.json.sig --certificate convention.json.pem \
+  --certificate-identity-regexp '^https://github.com/rimi-ai/rimi.convention/\.github/workflows/release\.yml@refs/tags/' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+[en.md](en.md) reste la source : le fichier n'en est que la projection, reconstruite par [tools/build_convention_json.py](tools/build_convention_json.py) et vérifiée à chaque modification. En cas de divergence, c'est le texte qui fait foi.
 
 <a id="fr-niveaux"></a>
 ### Niveaux de conformité

@@ -2,6 +2,12 @@
 
 All notable changes to the convention are listed here. Versions follow [GOVERNANCE.md](GOVERNANCE.md#versions).
 
+## [Unreleased]
+
+### Added
+
+- `convention.json`, the machine-readable projection of en.md: every rule with its type, status, wave, principle, obligations and the fingerprint of its text, plus the levels and the test-protocol thresholds. Rebuilt and checked on every change, signed at each release without any private key (Sigstore keyless, provenance attestation), published at <https://rimi-ai.github.io/rimi.convention/convention.json> and frozen per version under `versions/`.
+
 ## [0.3.0] — 2026-09-17
 
 Changes made after three external reviews (ChatGPT, Gemini, Claude).

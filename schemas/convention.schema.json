@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rimi-ai.github.io/rimi.convention/schemas/convention.schema.json",
+  "title": "rimi. convention, machine-readable projection",
+  "description": "Shape of convention.json, produced from en.md by tools/build_convention_json.py. The text is the source; this file is only its projection. If the two diverge, en.md prevails.",
+  "type": "object",
+  "required": [
+    "convention_version",
+    "generated_at",
+    "text_sha256",
+    "rules",
+    "levels",
+    "thresholds"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "convention_version": {
+      "description": "Version of the convention, as stated on the first lines of en.md.",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "generated_at": {
+      "description": "When this file was built, UTC. The only field that depends on the run: it is excluded from every comparison and from the fingerprints.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "text_sha256": {
+      "description": "SHA-256 of en.md, the normative text this projection was built from.",
+      "$ref": "#/$defs/sha256"
+    },
+    "rules": {
+      "description": "Every rule of Parts A, B and C, ordered by part then by number.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rule" }
+    },
+    "levels": {
+      "type": "object",
+      "required": ["conformance", "frugality"],
+      "additionalProperties": false,
+      "properties": {
+        "conformance": {
+          "description": "Levels A, AA and AAA, as published in the convention.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/level" }
+        },
+        "frugality": {
+          "description": "Indicators S1, S2 and S3, scored separately from conformance.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/level" }
+        }
+      }
+    },
+    "thresholds": {
+      "description": "The test protocol in numbers.",
+      "type": "object",
+      "required": [
+        "must_pass_rate",
+        "should_pass_rate",
+        "min_variants_per_case",
+        "min_runs_per_variant",
+        "stable_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "must_pass_rate": {
+          "description": "Share of runs a MUST or MUST NOT obligation must pass.",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "should_pass_rate": {
+          "description": "Share of runs a SHOULD recommendation must pass.",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "min_variants_per_case": { "type": "integer", "minimum": 1 },
+        "min_runs_per_variant": { "type": "integer", "minimum": 1 },
+        "stable_status": {
+          "description": "What a rule must pass before it reaches Stable status.",
+          "type": "object",
+          "required": ["min_providers", "min_models", "min_campaigns"],
+          "additionalProperties": false,
+          "properties": {
+            "min_providers": { "type": "integer", "minimum": 1 },
+            "min_models": { "type": "integer", "minimum": 1 },
+            "min_campaigns": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "level": {
+      "type": "object",
+      "required": ["id", "requirement"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "requirement": { "type": "string", "minLength": 1 }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "part",
+        "type",
+        "status",
+        "wave",
+        "principle",
+        "summary",
+        "obligations",
+        "rule_sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Identifier, never reassigned.",
+          "type": "string",
+          "pattern": "^(CONV|CONC|SOB)-[0-9]{3}$"
+        },
+        "part": {
+          "description": "A: LLM behaviour. B: design of prompts and tools. C: frugality.",
+          "type": "string",
+          "enum": ["A", "B", "C"]
+        },
+        "type": {
+          "description": "Kind of rule. Only Parts A and B carry one; Part C rules have none, hence null. invariant_and_default is a rule that states an invariant and a default convention in the same breath (read as 'Invariant + default' in the text).",
+          "type": ["string", "null"],
+          "enum": ["invariant", "default_convention", "invariant_and_default", "informative", null]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Draft", "Proposed", "Accepted", "Stable", "Retired"]
+        },
+        "wave": {
+          "description": "Review wave the rule is discussed in.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "principle": {
+          "description": "The principle the rule derives from.",
+          "type": "string",
+          "pattern": "^P-[0-9]{2}$"
+        },
+        "summary": {
+          "description": "The convention as the text states it, verbatim.",
+          "type": "string",
+          "minLength": 1
+        },
+        "obligations": {
+          "description": "The summary cut into its obligations, one per modal verb. SHOULD NOT appears in the text of Part C and is admitted here.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["level", "text"],
+            "additionalProperties": false,
+            "properties": {
+              "level": {
+                "type": "string",
+                "enum": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"]
+              },
+              "text": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "rule_sha256": {
+          "description": "SHA-256 of the rule's source extract in en.md: its table row, or its whole section for a rule written out in full. A rule whose text changes changes fingerprint.",
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  }
+}

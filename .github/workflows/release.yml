@@ -1,0 +1,105 @@
+name: release
+
+# On a tag: rebuild convention.json from en.md, sign it without any private key
+# (Sigstore keyless: the identity is this workflow's OIDC token, the signature is
+# recorded in the public Rekor transparency log), attest where it came from,
+# attach it to the release, and check that GitHub Pages serves the same file.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write      # attach the assets to the release
+  id-token: write      # keyless signature: OIDC identity of this run
+  attestations: write  # build provenance
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install the schema validator
+        run: pip install --quiet "jsonschema==4.23.0"
+
+      - name: The tag, the text and the projection say the same version
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          version="${tag#v}"
+          stated="$(python3 -c "import json; print(json.load(open('convention.json'))['convention_version'])")"
+          if [ "$version" != "$stated" ]; then
+            echo "tag $tag does not match the version stated in the convention ($stated)." >&2
+            exit 1
+          fi
+          if [ ! -f "versions/$tag/convention.json" ]; then
+            echo "versions/$tag/convention.json is missing." >&2
+            echo "Run python3 tools/build_convention_json.py --freeze and commit it before tagging." >&2
+            exit 1
+          fi
+
+      - name: The committed projection is the one en.md produces
+        run: python3 tools/build_convention_json.py --check
+
+      - name: The frozen copy is byte-for-byte the published file
+        run: cmp convention.json "versions/${GITHUB_REF_NAME}/convention.json"
+
+      - name: The file validates against the schema
+        run: python3 tools/validate_convention_json.py convention.json
+
+      - name: Fingerprint
+        id: fingerprint
+        run: echo "sha256=$(sha256sum convention.json | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - uses: sigstore/cosign-installer@v3
+
+      - name: Sign, without any private key
+        run: |
+          cosign sign-blob --yes convention.json \
+            --output-signature convention.json.sig \
+            --output-certificate convention.json.pem
+
+      - name: Verify the signature, the way a third party would
+        run: |
+          cosign verify-blob convention.json \
+            --signature convention.json.sig \
+            --certificate convention.json.pem \
+            --certificate-identity-regexp "^${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/\.github/workflows/release\.yml@refs/tags/" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com
+
+      - name: Attest where this file comes from
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: convention.json
+
+      - name: Attach the package to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${GITHUB_REF_NAME}" \
+            convention.json convention.json.sig convention.json.pem --clobber
+
+      - name: GitHub Pages serves this release
+        run: |
+          site="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+          python3 tools/check_published.py \
+            --file convention.json \
+            --url "$site/convention.json" \
+            --url "$site/versions/${GITHUB_REF_NAME}/convention.json"
+
+      - name: Summary
+        run: |
+          site="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+          {
+            echo "### convention.json"
+            echo
+            echo "- version: \`${GITHUB_REF_NAME}\`"
+            echo "- sha256: \`${{ steps.fingerprint.outputs.sha256 }}\`"
+            echo "- latest: $site/convention.json"
+            echo "- frozen: $site/versions/${GITHUB_REF_NAME}/convention.json"
+            echo "- signature: keyless (Sigstore), identity of this workflow, recorded in Rekor"
+          } >> "$GITHUB_STEP_SUMMARY"

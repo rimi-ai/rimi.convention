@@ -1,0 +1,34 @@
+name: convention.json
+
+# The text is the source. convention.json is only its projection: this workflow
+# rebuilds it from en.md and fails when the committed file no longer matches.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  projection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install the schema validator
+        run: pip install --quiet "jsonschema==4.23.0"
+
+      - name: The committed projection is the one en.md produces
+        run: python3 tools/build_convention_json.py --check
+
+      - name: Every published copy validates against the schema
+        run: python3 tools/validate_convention_json.py
+
+      - name: Tests
+        run: python3 -m unittest discover -s tools -p 'test_*.py' -v
