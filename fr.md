@@ -1,6 +1,6 @@
 # rimi. — Convention ouverte de fiabilité conversationnelle des LLM
 
-Version 0.1.0 · 17 septembre 2026 · Hiram
+Version 0.2.0 · 17 septembre 2026 · Hiram
 
 *Traduction officielle. Le texte de référence est la version anglaise ([en.md](en.md)).*
 
@@ -81,7 +81,7 @@ Quatorze principes fondent les règles, dont quatre encore candidats. Chaque rè
 | P-10 | Généralisation | Un cas unique ne fait pas une règle générale. | Validé | CONV-007, CONV-014, CONC-011 |
 | P-11 | Universalité | Le vocabulaire public d'un métier est mieux compris que le vocabulaire privé. | Candidat (3 observations) | CONC-004 |
 | P-12 | Discrétion | Une donnée personnelle n'est communiquée qu'à la personne qu'elle concerne, et seulement si c'est nécessaire. | Candidat (aucune observation) | CONV-034 |
-| P-13 | Sobriété | Ne consommer que ce que la tâche exige, sans jamais dégrader la fiabilité. | Candidat (cas réels en production) | SOB-001 à SOB-018 |
+| P-13 | Sobriété | Ne consommer que ce que la tâche exige, sans jamais dégrader la fiabilité. | Candidat (cas réels en production) | SOB-001 à SOB-020 |
 | P-14 | Poids de la preuve | Une affirmation ne vaut que ce que vaut sa meilleure preuve. | Candidat (1 cas réel) | CONV-035 |
 
 ## Partie A — CONV-001, réponse non discriminante à une alternative
@@ -186,7 +186,7 @@ Ces onze règles s'appliquent au prompt système et aux schémas d'outils avant 
 | CONC-010 | P-03 | Versions | Toute modification du prompt ou des outils en production DOIT être versionnée. Elle DEVRAIT être signalée si elle change un comportement visible. | Un fichier nommé « current » comptait 407 lignes de moins que le prompt réellement en production |
 | CONC-011 | P-10 | Portée | Chaque règle DEVRAIT déclarer sa portée. Extensive : elle s'applique à tous les cas de même nature, sauf les exclusions nommées. Restrictive : elle ne s'applique qu'aux cas qu'elle nomme. À défaut de déclaration, une règle d'intégrité des faits DOIT être lue comme extensive, et une règle de ton, de procédure ou de rôle comme restrictive. | À documenter |
 
-## Partie C — SOB-001 à SOB-018, règles de sobriété en brouillon
+## Partie C — SOB-001 à SOB-020, règles de sobriété en brouillon
 
 Ces dix-huit règles visent à ne consommer que ce que la tâche exige. Elles s'adressent à trois publics : le concepteur du système, le LLM, et la personne qui formule la demande.
 
@@ -212,6 +212,8 @@ Ces dix-huit règles visent à ne consommer que ce que la tâche exige. Elles s'
 | SOB-016 | Demandeur | Dire la forme attendue | DEVRAIT préciser la longueur et le format de la réponse. | À documenter |
 | SOB-017 | Demandeur | Proportionner l'effort | DEVRAIT distinguer une vérification rapide d'un examen complet. | À documenter |
 | SOB-018 | LLM | Recherche ciblée | Si la demande ne dit pas où, DEVRAIT chercher de façon ciblée plutôt que tout relire. NE DEVRAIT PAS demander l'emplacement quand une recherche suffit à le trouver. | À documenter |
+| SOB-019 | Concepteur | Tâches périodiques | Une vérification qui revient à intervalle fixe NE DOIT PAS réveiller un LLM quand un contrôle automatique simple peut la faire. Le LLM n'intervient que si ce contrôle détecte un changement à interpréter. | À documenter |
+| SOB-020 | Concepteur | Routage par difficulté | Un système qui dispose de plusieurs modèles DEVRAIT confier chaque demande au plus petit modèle capable de la traiter. Le routage DOIT faire monter la demande vers un modèle plus capable en cas d'incertitude signalée, d'échec à un contrôle ou de donnée manquante ; NE DOIT PAS faire baisser le niveau de fiabilité déclaré ; DEVRAIT être mesuré (part par modèle, taux de remontée, coût par tâche réussie, voir SOB-009). | À documenter |
 
 Les règles destinées au demandeur ne sont pas notées : un système peut seulement les encourager, par exemple dans son interface.
 
@@ -288,5 +290,6 @@ Le texte est versé au domaine public ; les tests sont libres d'intégration dan
 - *NIST, AI 600-1, profil IA générative (2024).*
 - *Règlement européen sur l'IA (UE) 2024/1689, article 50 : CONV-020.*
 - *OWASP, Top 10 LLM (2025) : LLM01 (CONV-028), LLM09 (CONV-020). Green Software Foundation, Software Carbon Intensity (SCI) et SCI for AI : SOB-009.*
+- *L. Chen, M. Zaharia, J. Zou, « FrugalGPT » (2023) ; I. Ong et al., « RouteLLM » (2024) : SOB-020.*
 - *rimi.teshuva, inventaire des faits à trois niveaux (avril 2026) : CONV-016.*
 - *Cas réels d'un agent de réservation de vols (avril et septembre 2026) : dérives citées dans les tableaux.*
