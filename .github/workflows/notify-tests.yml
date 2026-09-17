@@ -48,14 +48,14 @@ jobs:
         run: |
           for attempt in $(seq 1 10); do
             if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
-                 --jq '[.assets[].name]' | grep -q 'convention.json.sig'; then
+                 --jq '[.assets[].name]' | grep -q 'convention.json.sigstore.json'; then
               echo "the signature is attached to $TAG."
               exit 0
             fi
             echo "waiting for the release workflow to attach the signed package ($attempt/10)"
             sleep 30
           done
-          echo "::error::$TAG has no convention.json.sig: nothing was announced to $TARGET."
+          echo "::error::$TAG has no convention.json.sigstore.json: nothing was announced to $TARGET."
           exit 1
 
       - name: Read what the release publishes
