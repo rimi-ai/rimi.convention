@@ -7,6 +7,7 @@ All notable changes to the convention are listed here. Versions follow [GOVERNAN
 ### Added
 
 - `convention.json`, the machine-readable projection of en.md: every rule with its type, status, wave, principle, obligations and the fingerprint of its text, plus the levels and the test-protocol thresholds. Rebuilt and checked on every change, signed at each release without any private key (Sigstore keyless, provenance attestation), published at <https://rimi-ai.github.io/rimi.convention/convention.json> and frozen per version under `versions/`.
+- A release also signals `rimi.tests`: a `repository_dispatch` carrying the version, the fingerprint and the release URL. It announces, it never changes a rule and nothing merges automatically.
 
 ## [0.3.0] — 2026-09-17
 

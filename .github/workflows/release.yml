@@ -7,11 +7,21 @@ name: release
 # serves the same file.
 #
 # The trigger is the published release, not the tag: the release notes are
-# written by a human, and the assets are attached to the release they describe.
+# written by a human, and the assets belong to the release they describe.
+#
+# workflow_dispatch signs a release published before this workflow existed. Its
+# tag is left untouched: the run checks out the branch it was started from and
+# refuses to go on unless en.md at that tag is byte-for-byte the text it is
+# projecting.
 
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag of an existing release to sign (e.g. v0.3.0)'
+        required: true
 
 permissions:
   contents: write      # attach the assets to the release
@@ -22,11 +32,12 @@ jobs:
   package:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.release.tag_name }}
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
 
       - uses: actions/setup-python@v7
         with:
@@ -48,6 +59,15 @@ jobs:
             echo "Run python3 tools/build_convention_json.py --freeze and commit it before releasing." >&2
             exit 1
           fi
+
+      - name: The text at this tag is the text being signed
+        run: |
+          git show "$TAG:en.md" > en-at-tag.md
+          if ! cmp -s en.md en-at-tag.md; then
+            echo "en.md has changed since $TAG: this checkout cannot sign that release." >&2
+            exit 1
+          fi
+          rm en-at-tag.md
 
       - name: The committed projection is the one en.md produces
         run: python3 tools/build_convention_json.py --check
@@ -75,7 +95,7 @@ jobs:
           cosign verify-blob convention.json \
             --signature convention.json.sig \
             --certificate convention.json.pem \
-            --certificate-identity-regexp "^${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/\.github/workflows/release\.yml@refs/tags/" \
+            --certificate-identity-regexp "^${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/\.github/workflows/release\.yml@refs/" \
             --certificate-oidc-issuer https://token.actions.githubusercontent.com
 
       - name: Attest where this file comes from

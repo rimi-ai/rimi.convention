@@ -1,0 +1,92 @@
+name: notify rimi.tests
+
+# A release tells rimi.tests that a new version of the text exists. It sends a
+# signal, nothing more: no rule is ever modified automatically over there, and
+# nothing is merged automatically. A robot opens a pull request, a human reads it.
+#
+# Payload: repository_dispatch, event type "convention-released",
+# client_payload { version, convention_sha256, release_url }.
+#
+# What is announced is what the release actually publishes: the signal waits for
+# the signed package, then reads the version and the fingerprint from the asset
+# attached to the release, not from a working copy.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag of an existing release to announce (e.g. v0.3.0)'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      TARGET: rimi-ai/rimi.tests
+    steps:
+      - name: Reaching another repository needs a token of its own
+        env:
+          TOKEN: ${{ secrets.RIMI_TESTS_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::secret RIMI_TESTS_DISPATCH_TOKEN is missing: $TARGET was not told about $TAG."
+            echo "A workflow's GITHUB_TOKEN cannot raise an event in another repository." >&2
+            echo "Create a fine-grained token limited to $TARGET, permission Contents: write," >&2
+            echo "and store it as the repository secret RIMI_TESTS_DISPATCH_TOKEN." >&2
+            exit 1
+          fi
+
+      - name: Wait for the signed package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in $(seq 1 10); do
+            if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets \
+                 --jq '[.assets[].name]' | grep -q 'convention.json.sig'; then
+              echo "the signature is attached to $TAG."
+              exit 0
+            fi
+            echo "waiting for the release workflow to attach the signed package ($attempt/10)"
+            sleep 30
+          done
+          echo "::error::$TAG has no convention.json.sig: nothing was announced to $TARGET."
+          exit 1
+
+      - name: Read what the release publishes
+        id: package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'convention.json' --dir released
+          {
+            echo "version=$(python3 -c "import json; print(json.load(open('released/convention.json'))['convention_version'])")"
+            echo "sha256=$(sha256sum released/convention.json | cut -d' ' -f1)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Tell rimi.tests
+        env:
+          GH_TOKEN: ${{ secrets.RIMI_TESTS_DISPATCH_TOKEN }}
+          VERSION: ${{ steps.package.outputs.version }}
+          FINGERPRINT: ${{ steps.package.outputs.sha256 }}
+        run: |
+          release_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${TAG}"
+          jq -n --arg version "$VERSION" --arg fingerprint "$FINGERPRINT" --arg url "$release_url" \
+            '{event_type: "convention-released",
+              client_payload: {version: $version, convention_sha256: $fingerprint, release_url: $url}}' \
+            > payload.json
+          gh api "repos/$TARGET/dispatches" --method POST --input payload.json
+          {
+            echo "### Signal sent to $TARGET"
+            echo
+            echo "- event: \`convention-released\`"
+            echo "- version: \`$VERSION\`"
+            echo "- convention_sha256: \`$FINGERPRINT\`"
+            echo "- release_url: $release_url"
+          } >> "$GITHUB_STEP_SUMMARY"

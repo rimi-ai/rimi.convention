@@ -57,12 +57,12 @@ The [test protocol](en.md#test-protocol) fixes what is run, how many times and w
 
 Every release publishes `convention.json`, the projection of the text for tools: each rule with its type, status, wave, obligations and the fingerprint of its own text. Latest version at <https://rimi-ai.github.io/rimi.convention/convention.json>, frozen per version at `…/versions/v0.3.0/convention.json`, and attached to each [release](../../releases).
 
-It is signed during the release, with no private key anywhere: Sigstore keyless, the identity being the release workflow itself, the signature recorded in the public Rekor log. Anyone can check it, with the `convention.json.sig` and `convention.json.pem` assets of the release:
+It is signed during the release, with no private key anywhere: Sigstore keyless, the identity being the release workflow itself, the signature recorded in the public Rekor log. Anyone can check it, with the `convention.json.sig` and `convention.json.pem` assets of the release — the certificate names the exact commit and ref that signed:
 
 ```bash
 cosign verify-blob convention.json \
   --signature convention.json.sig --certificate convention.json.pem \
-  --certificate-identity-regexp '^https://github.com/rimi-ai/rimi.convention/\.github/workflows/release\.yml@refs/tags/' \
+  --certificate-identity-regexp '^https://github.com/rimi-ai/rimi.convention/\.github/workflows/release\.yml@refs/' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
@@ -177,12 +177,12 @@ Le [protocole de test](fr.md#protocole-de-test) fixe ce qui est exécuté, combi
 
 Chaque version publie `convention.json`, la projection du texte à l'usage des outils : chaque règle avec son type, son statut, son lot, ses obligations et l'empreinte de son propre texte. Dernière version sur <https://rimi-ai.github.io/rimi.convention/convention.json>, version figée sur `…/versions/v0.3.0/convention.json`, et fichier joint à chaque [release](../../releases).
 
-Il est signé pendant la publication, sans aucune clé privée : Sigstore en mode keyless, l'identité étant le workflow de release lui-même, la signature inscrite dans le journal public Rekor. N'importe qui peut la vérifier, avec les fichiers `convention.json.sig` et `convention.json.pem` de la release :
+Il est signé pendant la publication, sans aucune clé privée : Sigstore en mode keyless, l'identité étant le workflow de release lui-même, la signature inscrite dans le journal public Rekor. N'importe qui peut la vérifier, avec les fichiers `convention.json.sig` et `convention.json.pem` de la release — le certificat nomme le commit et la référence exacts qui ont signé :
 
 ```bash
 cosign verify-blob convention.json \
   --signature convention.json.sig --certificate convention.json.pem \
-  --certificate-identity-regexp '^https://github.com/rimi-ai/rimi.convention/\.github/workflows/release\.yml@refs/tags/' \
+  --certificate-identity-regexp '^https://github.com/rimi-ai/rimi.convention/\.github/workflows/release\.yml@refs/' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
