@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rimi. — Open Convention for Conversational Reliability of LLMs</title>
+<meta name="description" content="An open, testable convention that sets what an LLM does when it would otherwise guess, smooth over or invent. For responsible AI: reliable, frugal, honest.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://rimi-ai.github.io/rimi.convention/">
+<link rel="icon" type="image/svg+xml" href="assets/icon-light.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="rimi.">
+<meta property="og:title" content="rimi. — Open Convention for Conversational Reliability of LLMs">
+<meta property="og:description" content="For responsible AI: reliable, frugal, honest. · Pour une IA responsable : fiable, sobre, loyale.">
+<meta property="og:url" content="https://rimi-ai.github.io/rimi.convention/">
+<meta property="og:image" content="https://rimi-ai.github.io/rimi.convention/assets/social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="rimi. open convention — For responsible AI: reliable, frugal, honest.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://rimi-ai.github.io/rimi.convention/assets/social-preview.png">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1c1c1c; --muted:#57606a; --line:#d8dee4; --card:#f6f8fa;
+  --brand:#0F9D8A; --btn:#0B7A6B; --btn-ink:#ffffff; --bubble:#e7f5f2;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0d1117; --ink:#e6edf3; --muted:#9da7b3; --line:#30363d; --card:#161b22;
+         --btn:#0F9D8A; --btn-ink:#0d1117; --bubble:#10302b; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+a{color:inherit}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+.hero{text-align:center;padding:56px 20px 36px}
+.hero .logo img{width:320px;max-width:82vw;height:auto}
+.tag{font-size:1.35rem;font-weight:650;margin:22px 0 2px;letter-spacing:-.01em}
+.tag-fr{color:var(--muted);margin:0}
+.gf{margin:18px 0 0}
+.gf img{height:30px;width:auto;vertical-align:middle}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:30px 0 0}
+.btn{display:inline-block;padding:11px 20px;border-radius:10px;font-weight:600;text-decoration:none;
+  border:1.5px solid var(--btn);line-height:1.2}
+.btn.primary{background:var(--btn);color:var(--btn-ink)}
+.btn.ghost{color:var(--ink);border-color:var(--line)}
+.btn:hover{filter:brightness(1.08)} .btn:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+section{padding:34px 0;border-top:1px solid var(--line)}
+h2{font-size:1.3rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 20px}
+p{margin:0 0 12px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 10px}
+.card h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+.card.good h3{color:var(--brand)}
+.msg{max-width:92%;padding:9px 13px;border-radius:14px;margin:0 0 8px;font-size:.95rem;background:var(--bg);border:1px solid var(--line)}
+.msg.user{margin-left:auto;background:var(--bubble);border-color:transparent;text-align:right}
+.msg.bad{font-style:italic;color:var(--muted)}
+.who{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:2px}
+details{margin-top:14px}
+summary{cursor:pointer;color:var(--muted);font-weight:600}
+details .compare{margin-top:14px}
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.levels ul{list-style:none;margin:0;padding:0}
+.levels li{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}
+.levels li:last-child{border-bottom:0}
+.levels img{height:24px;width:auto;flex:none;margin-top:1px}
+.levels small{display:block;color:var(--muted)}
+.note{color:var(--muted);margin-top:16px}
+code{font:.92em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+footer{border-top:1px solid var(--line);padding:26px 20px 40px;text-align:center;color:var(--muted);font-size:.9rem}
+footer a{color:var(--muted)}
+@media (max-width:640px){
+  .hero{padding-top:36px}
+  .compare,.levels{grid-template-columns:1fr}
+  .tag{font-size:1.15rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1 style="margin:0"><picture class="logo"><source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg"><img src="assets/logo-light.svg" alt="rimi. — Open Convention for Conversational Reliability of LLMs" width="320" height="127"></picture></h1>
+  <p class="tag">For responsible AI: reliable, frugal, honest.</p>
+  <p class="tag-fr" lang="fr">Pour une IA responsable : fiable, sobre, loyale.</p>
+  <p class="gf"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/green-friendly-dark.svg"><img src="assets/green-friendly-light.svg" alt="green friendly"></picture></p>
+  <nav class="cta" aria-label="Main">
+    <a class="btn primary" href="https://github.com/rimi-ai/rimi.convention/blob/main/en.md">Read the convention (EN)</a>
+    <a class="btn primary" href="https://github.com/rimi-ai/rimi.convention/blob/main/fr.md" lang="fr">Lire la convention (FR)</a>
+    <a class="btn ghost" href="https://github.com/rimi-ai/rimi.convention/blob/main/CONTRIBUTING.md">Contribute</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section aria-labelledby="yes">
+    <h2 id="yes">The "yes" example</h2>
+    <p class="sub">The assistant offers two options. The user answers "Yes." What happens next?</p>
+    <div class="compare">
+      <div class="card">
+        <h3>Without a convention</h3>
+        <p class="msg"><span class="who">Assistant</span>Option 1, direct flight at 2 pm, or option 2, 9-hour stopover?</p>
+        <p class="msg user"><span class="who">User</span>Yes.</p>
+        <p class="msg bad"><span class="who">Assistant</span>Guesses one of the two, or asks the same question again, and again.</p>
+      </div>
+      <div class="card good">
+        <h3>With rimi. (CONV-001)</h3>
+        <p class="msg"><span class="who">Assistant</span>Option 1, direct flight at 2 pm, or option 2, 9-hour stopover?</p>
+        <p class="msg user"><span class="who">User</span>Yes.</p>
+        <p class="msg"><span class="who">Assistant</span>I'm going with option 1. Say 2 if you preferred the other one.</p>
+      </div>
+    </div>
+    <details lang="fr">
+      <summary>L'exemple du « oui » en français</summary>
+      <div class="compare">
+        <div class="card">
+          <h3>Sans convention</h3>
+          <p class="msg"><span class="who">Assistant</span>Option 1, vol direct à 14h, ou option 2, escale de 9h ?</p>
+          <p class="msg user"><span class="who">Utilisateur</span>Oui.</p>
+          <p class="msg bad"><span class="who">Assistant</span>Devine l'une des deux, ou repose la même question, encore et encore.</p>
+        </div>
+        <div class="card good">
+          <h3>Avec rimi. (CONV-001)</h3>
+          <p class="msg"><span class="who">Assistant</span>Option 1, vol direct à 14h, ou option 2, escale de 9h ?</p>
+          <p class="msg user"><span class="who">Utilisateur</span>Oui.</p>
+          <p class="msg"><span class="who">Assistant</span>Je retiens l'option 1. Dites 2 si vous préfériez l'autre.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section aria-labelledby="what">
+    <h2 id="what">What this is</h2>
+    <p class="sub" lang="fr">De quoi il s'agit</p>
+    <p>A growing set of short, testable rules that say what an LLM does when it would otherwise guess, smooth over or invent. They are independent of any model, provider or industry. When the LLM applies a rule, it says so, and the user can correct it.</p>
+    <p lang="fr" style="color:var(--muted)">Des règles courtes et testables qui disent ce que fait un LLM quand il aurait tendance à deviner, arranger ou inventer. Indépendantes de tout modèle, fournisseur ou secteur. Le LLM annonce la règle qu'il applique, et l'utilisateur peut corriger.</p>
+    <p>Version 0.2.0 · Draft: 14 principles, 35 behaviour rules (CONV), 11 design rules (CONC), 20 frugality rules (SOB).</p>
+  </section>
+
+  <section aria-labelledby="levels">
+    <h2 id="levels">Conformance levels</h2>
+    <p class="sub" lang="fr">Niveaux de conformité</p>
+    <div class="levels">
+      <div>
+        <h3 style="margin:0 0 6px;font-size:1rem">Reliability <span style="color:var(--muted);font-weight:400" lang="fr">· Fiabilité</span></h3>
+        <ul>
+          <li><picture><source media="(prefers-color-scheme: dark)" srcset="assets/level-A-dark.svg"><img src="assets/level-A-light.svg" alt="rimi. level A"></picture><span>All MUST and MUST NOT obligations of Part A (Accepted or Stable rules)<small lang="fr">Toutes les obligations DOIT et NE DOIT PAS de la partie A (règles Acceptées ou Stables)</small></span></li>
+          <li><picture><source media="(prefers-color-scheme: dark)" srcset="assets/level-AA-dark.svg"><img src="assets/level-AA-light.svg" alt="rimi. level AA"></picture><span>Level A, plus all MUST and MUST NOT obligations of Part B<small lang="fr">Niveau A, plus les obligations DOIT et NE DOIT PAS de la partie B</small></span></li>
+          <li><picture><source media="(prefers-color-scheme: dark)" srcset="assets/level-AAA-dark.svg"><img src="assets/level-AAA-light.svg" alt="rimi. level AAA"></picture><span>Level AA, plus all SHOULD recommendations of both parts<small lang="fr">Niveau AA, plus toutes les recommandations DEVRAIT des deux parties</small></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin:0 0 6px;font-size:1rem">Frugality <span style="color:var(--muted);font-weight:400" lang="fr">· Sobriété</span></h3>
+        <ul>
+          <li><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sob-S1-dark.svg"><img src="assets/sob-S1-light.svg" alt="rimi. frugality S1"></picture><span>All MUST and MUST NOT obligations of Part C<small lang="fr">Toutes les obligations DOIT et NE DOIT PAS de la partie C</small></span></li>
+          <li><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sob-S2-dark.svg"><img src="assets/sob-S2-light.svg" alt="rimi. frugality S2"></picture><span>S1, plus the published measurement (SOB-009)<small lang="fr">S1, plus la mesure publiée (SOB-009)</small></span></li>
+          <li><picture><source media="(prefers-color-scheme: dark)" srcset="assets/sob-S3-dark.svg"><img src="assets/sob-S3-light.svg" alt="rimi. frugality S3"></picture><span>S2, plus all SHOULD recommendations of Part C addressed to the designer and the LLM<small lang="fr">S2, plus les recommandations DEVRAIT de la partie C destinées au concepteur et au LLM</small></span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Example claim: <code>rimi. AA · S2 (v0.2.0)</code>. Reliability comes first: a frugal answer that is wrong is not a saving.</p>
+  </section>
+
+  <section aria-labelledby="join" style="text-align:center">
+    <h2 id="join">Take part</h2>
+    <p class="sub" lang="fr">Participer</p>
+    <p>Propose a rule, report a real case, object to a rule. Everything happens in the open.</p>
+    <nav class="cta" aria-label="Take part">
+      <a class="btn primary" href="https://github.com/rimi-ai/rimi.convention/blob/main/en.md">Read the convention (EN)</a>
+      <a class="btn primary" href="https://github.com/rimi-ai/rimi.convention/blob/main/fr.md" lang="fr">Lire la convention (FR)</a>
+      <a class="btn ghost" href="https://github.com/rimi-ai/rimi.convention/blob/main/CONTRIBUTING.md">Contribute</a>
+    </nav>
+  </section>
+
+</main>
+
+<footer>
+  <p><a href="https://github.com/rimi-ai/rimi.convention">github.com/rimi-ai/rimi.convention</a> · <a href="https://github.com/rimi-ai/rimi.convention/discussions">Discussions</a> · <a href="https://doi.org/10.5281/zenodo.22814989">DOI 10.5281/zenodo.22814989</a></p>
+  <p>Text dedicated to the public domain: <a href="https://github.com/rimi-ai/rimi.convention/blob/main/LICENSE">CC0 1.0</a> · Hiram, 2026</p>
+</footer>
+
+</body>
+</html>

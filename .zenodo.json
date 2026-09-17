@@ -1,0 +1,23 @@
+{
+  "title": "rimi. — Open Convention for Conversational Reliability of LLMs",
+  "upload_type": "publication",
+  "publication_type": "other",
+  "description": "An open, collaborative and testable convention that sets what a large language model does when it would otherwise guess, smooth over or invent: ambiguous answers, conflicting sources, missing data, and resource use. Conformance levels A, AA, AAA with a separate frugality indicator S1, S2, S3.",
+  "creators": [
+    {
+      "name": "Hiram"
+    }
+  ],
+  "license": "cc-zero",
+  "access_right": "open",
+  "keywords": [
+    "large language models",
+    "conversational AI",
+    "reliability",
+    "hallucination",
+    "responsible AI",
+    "frugal AI",
+    "convention",
+    "consensus"
+  ]
+}

@@ -6,6 +6,7 @@ authors:
   - name: "Hiram"
 version: "0.2.0"
 date-released: "2026-09-17"
+doi: "10.5281/zenodo.22814989"
 license: CC0-1.0
 repository-code: "https://github.com/rimi-ai/rimi.convention"
 url: "https://github.com/rimi-ai/rimi.convention"
