@@ -13,7 +13,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg" alt="License: CC0-1.0"></a>
-  <img src="https://img.shields.io/badge/version-0.2.0-blue" alt="Version 0.2.0">
+  <img src="https://img.shields.io/badge/version-0.3.0-blue" alt="Version 0.3.0">
   <img src="https://img.shields.io/badge/status-draft-orange" alt="Status: draft">
   <a href="https://doi.org/10.5281/zenodo.22814989"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.22814989.svg" alt="DOI 10.5281/zenodo.22814989"></a>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/green-friendly-dark.svg"><img src="assets/green-friendly-light.svg" alt="green friendly" height="28"></picture>
@@ -21,7 +21,7 @@
 
 ---
 
-**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.2.0](#what-is-inside-v020) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
+**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
 
 ## What this is
 
@@ -40,7 +40,7 @@ This repository holds a growing set of such conventions: short, testable rules t
 | --- | --- |
 | **Assistant:** Option 1, direct flight at 2 pm, or option 2, 9-hour stopover?<br>**User:** Yes.<br>**Assistant:** *guesses one of the two, or asks the same question again, and again.* | **Assistant:** Option 1, direct flight at 2 pm, or option 2, 9-hour stopover?<br>**User:** Yes.<br>**Assistant:** I'm going with option 1. Say 2 if you preferred the other one. |
 
-## What is inside v0.2.0
+## What is inside v0.3.0
 
 | Part | Content | Status |
 | --- | --- | --- |
@@ -49,9 +49,13 @@ This repository holds a growing set of such conventions: short, testable rules t
 | Part B | CONC-001 to CONC-011: design rules for prompts and tools | Draft |
 | Part C | SOB-001 to SOB-020: frugality for designers, models and requesters | Draft |
 
+Rules in Parts A and B carry a type: **invariant** (no protocol choice involved), **default convention** (a system may declare another one) or **informative** (the obligation already exists in law or a public framework). They are opened for discussion in five weekly waves; wave 1 is the core of 15 rules.
+
+The [test protocol](en.md#test-protocol) fixes what is run, how many times and what counts as a pass, and a [mapping table](en.md#mapping-to-existing-frameworks) says rule by rule what is new against OpenAI Model Spec, Microsoft HAX, NIST, OWASP and the AI Act.
+
 ## Conformance levels
 
-Conformance levels, inspired by WCAG: **A · AA · AAA** for reliability, plus a separate frugality indicator **S1 · S2 · S3**. Example claim: `rimi. AA · S2 (v0.2.0)`.
+Conformance levels, inspired by WCAG: **A · AA · AAA** for reliability, plus a separate frugality indicator **S1 · S2 · S3**. Example claim: `rimi. AA · S2 (v0.3.0)`.
 
 | Reliability | Requirement |
 | --- | --- |
@@ -106,9 +110,9 @@ Logo and badges composed with [Geist](https://github.com/vercel/geist-font) (SIL
 
 See [CITATION.cff](CITATION.cff).
 
-> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.2.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
+> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.3.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
 
-This DOI always resolves to the latest version. Each version also has its own DOI on Zenodo (v0.2.0: [10.5281/zenodo.22816833](https://doi.org/10.5281/zenodo.22816833)).
+This DOI always resolves to the latest version. Each version also has its own DOI on Zenodo.
 
 ## Origin
 
@@ -120,7 +124,7 @@ The method comes from audits of production prompts, read as normative texts. Its
 
 **rimi. — pour une IA responsable : fiable, sobre, loyale.** · green friendly
 
-**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.2.0](#fr-contenu) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
+**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
 
 <a id="fr-en-bref"></a>
 ### En bref
@@ -140,7 +144,7 @@ Un utilisateur répond « oui » à la question « option 1 ou option 2 ? ». Pl
 | **Assistant :** Option 1, vol direct à 14h, ou option 2, escale de 9h ?<br>**Utilisateur :** Oui.<br>**Assistant :** *devine l'une des deux, ou repose la même question, encore et encore.* | **Assistant :** Option 1, vol direct à 14h, ou option 2, escale de 9h ?<br>**Utilisateur :** Oui.<br>**Assistant :** Je retiens l'option 1. Dites 2 si vous préfériez l'autre. |
 
 <a id="fr-contenu"></a>
-### Contenu de la v0.2.0
+### Contenu de la v0.3.0
 
 | Partie | Contenu | Statut |
 | --- | --- | --- |
@@ -149,10 +153,14 @@ Un utilisateur répond « oui » à la question « option 1 ou option 2 ? ». Pl
 | Partie B | CONC-001 à CONC-011 : règles de conception des prompts et des outils | Brouillon |
 | Partie C | SOB-001 à SOB-020 : sobriété pour les concepteurs, les modèles et les demandeurs | Brouillon |
 
+Les règles des parties A et B portent un type : **invariant** (aucun choix de protocole), **convention par défaut** (un système peut en déclarer une autre) ou **informative** (l'obligation existe déjà dans la loi ou un référentiel public). Elles sont ouvertes à la discussion par lots hebdomadaires ; le lot 1 est le noyau de 15 règles.
+
+Le [protocole de test](fr.md#protocole-de-test) fixe ce qui est exécuté, combien de fois et ce qui compte comme réussite, et une [table de correspondance](fr.md#correspondance-avec-les-cadres-existants) dit, règle par règle, ce qui est nouveau face à l'OpenAI Model Spec, Microsoft HAX, NIST, OWASP et l'AI Act.
+
 <a id="fr-niveaux"></a>
 ### Niveaux de conformité
 
-Niveaux de conformité inspirés des WCAG : **A · AA · AAA** pour la fiabilité, et un indicateur de sobriété distinct **S1 · S2 · S3**. Exemple de déclaration : `rimi. AA · S2 (v0.2.0)`.
+Niveaux de conformité inspirés des WCAG : **A · AA · AAA** pour la fiabilité, et un indicateur de sobriété distinct **S1 · S2 · S3**. Exemple de déclaration : `rimi. AA · S2 (v0.3.0)`.
 
 | Fiabilité | Exigence |
 | --- | --- |
@@ -201,13 +209,13 @@ Logo et badges composés avec [Geist](https://github.com/vercel/geist-font) (SIL
 
 Voir [CITATION.cff](CITATION.cff).
 
-> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.2.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
+> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.3.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
 
-Ce DOI renvoie toujours à la dernière version. Chaque version a aussi son propre DOI sur Zenodo (v0.2.0 : [10.5281/zenodo.22816833](https://doi.org/10.5281/zenodo.22816833)).
+Ce DOI renvoie toujours à la dernière version. Chaque version a aussi son propre DOI sur Zenodo.
 
 <a id="fr-origine"></a>
 ### Origine
 
 La méthode vient d'audits de prompts en production, lus comme des textes normatifs. Ses principes s'inspirent d'une tradition d'interprétation des textes ; détails et sources à la fin de [fr.md](fr.md#origine-et-sources).
 
-Version 0.2.0, brouillon. La fiabilité passe avant la sobriété.
+Version 0.3.0, brouillon. La fiabilité passe avant la sobriété.
