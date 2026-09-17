@@ -1,6 +1,6 @@
 # rimi. — Open Convention for Conversational Reliability of LLMs
 
-Version 0.1.0 · 17 September 2026 · Hiram
+Version 0.2.0 · 17 September 2026 · Hiram
 
 *Reference text. An official French translation is available in [fr.md](fr.md).*
 
@@ -81,7 +81,7 @@ Fourteen principles ground the rules, four of which are still candidates. Every 
 | P-10 | Generalisation | A single case does not make a general rule. | Validated | CONV-007, CONV-014, CONC-011 |
 | P-11 | Universality | A trade's public vocabulary is better understood than private vocabulary. | Candidate (3 observations) | CONC-004 |
 | P-12 | Discretion | Personal data is only disclosed to the person it concerns, and only when necessary. | Candidate (no observation) | CONV-034 |
-| P-13 | Frugality | Consume only what the task requires, without ever degrading reliability. | Candidate (real production cases) | SOB-001 to SOB-018 |
+| P-13 | Frugality | Consume only what the task requires, without ever degrading reliability. | Candidate (real production cases) | SOB-001 to SOB-020 |
 | P-14 | Weight of evidence | A statement is only worth its best evidence. | Candidate (1 real case) | CONV-035 |
 
 ## Part A — CONV-001, non-discriminating answer to an alternative
@@ -186,7 +186,7 @@ These eleven rules apply to the system prompt and to tool schemas before deploym
 | CONC-010 | P-03 | Versions | Every change to the prompt or tools in production MUST be versioned. It SHOULD be announced if it changes visible behaviour. | A file named "current" had 407 fewer lines than the prompt actually in production |
 | CONC-011 | P-10 | Scope | Every rule SHOULD declare its scope. Extensive: it applies to all cases of the same nature, except named exclusions. Restrictive: it applies only to the cases it names. Absent a declaration, a factual-integrity rule MUST be read as extensive, and a tone, procedure or role rule as restrictive. | To be documented |
 
-## Part C — SOB-001 to SOB-018, draft frugality rules
+## Part C — SOB-001 to SOB-020, draft frugality rules
 
 These eighteen rules aim to consume only what the task requires. They are addressed to three audiences: the system designer, the LLM, and the person making the request.
 
@@ -212,6 +212,8 @@ These eighteen rules aim to consume only what the task requires. They are addres
 | SOB-016 | Requester | State the expected form | SHOULD state the length and format of the answer. | To be documented |
 | SOB-017 | Requester | Size the effort | SHOULD distinguish a quick check from a full review. | To be documented |
 | SOB-018 | LLM | Targeted search | If the request does not say where, SHOULD search in a targeted way rather than re-read everything. SHOULD NOT ask for the location when a search is enough to find it. | To be documented |
+| SOB-019 | Designer | Periodic tasks | A check that recurs at a fixed interval MUST NOT wake an LLM when a simple automatic check can do it. The LLM steps in only if that check detects a change that needs interpreting. | To be documented |
+| SOB-020 | Designer | Routing by difficulty | A system with several models SHOULD give each request to the smallest model able to handle it. The routing MUST escalate the request to a more capable model when uncertainty is signalled, a check fails or data is missing; MUST NOT lower the declared reliability level; SHOULD be measured (share per model, escalation rate, cost per successful task, see SOB-009). | To be documented |
 
 Rules addressed to the requester are not scored: a system can only encourage them, for example in its interface.
 
@@ -288,5 +290,6 @@ The text is dedicated to the public domain; the tests are free to integrate into
 - *NIST, AI 600-1, Generative AI Profile (2024).*
 - *EU Artificial Intelligence Act, Regulation (EU) 2024/1689, Article 50: CONV-020.*
 - *OWASP, Top 10 for LLM Applications (2025): LLM01 (CONV-028), LLM09 (CONV-020). Green Software Foundation, Software Carbon Intensity (SCI) and SCI for AI: SOB-009.*
+- *L. Chen, M. Zaharia, J. Zou, "FrugalGPT" (2023); I. Ong et al., "RouteLLM" (2024): SOB-020.*
 - *rimi.teshuva, three-level inventory of facts (April 2026): CONV-016.*
 - *Real cases from a flight-booking agent (April and September 2026): drifts cited in the tables.*

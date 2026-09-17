@@ -4,7 +4,7 @@
 
 *rimi. is read "rimi dot".* · [Français](#français)
 
-[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](LICENSE) ![Version](https://img.shields.io/badge/version-0.1.0-blue) ![Status](https://img.shields.io/badge/status-draft-orange)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](LICENSE) ![Version](https://img.shields.io/badge/version-0.2.0-blue) ![Status](https://img.shields.io/badge/status-draft-orange)
 
 ---
 
@@ -19,16 +19,16 @@ This repository holds a growing set of such conventions: short, testable rules t
 - **The convention (reference text, English):** [en.md](en.md)
 - **Official French translation:** [fr.md](fr.md)
 
-## What is inside v0.1.0
+## What is inside v0.2.0
 
 | Part | Content | Status |
 | --- | --- | --- |
 | Principles | P-01 to P-14 | P-11 to P-14 candidates |
 | Part A | CONV-001 to CONV-035: model behaviour in conversation | CONV-001 Proposed, others Draft |
 | Part B | CONC-001 to CONC-011: design rules for prompts and tools | Draft |
-| Part C | SOB-001 to SOB-018: frugality for designers, models and requesters | Draft |
+| Part C | SOB-001 to SOB-020: frugality for designers, models and requesters | Draft |
 
-Conformance levels, inspired by WCAG: **A · AA · AAA** for reliability, plus a separate frugality indicator **S1 · S2 · S3**. Example claim: `rimi. AA · S2 (v0.1.0)`.
+Conformance levels, inspired by WCAG: **A · AA · AAA** for reliability, plus a separate frugality indicator **S1 · S2 · S3**. Example claim: `rimi. AA · S2 (v0.2.0)`.
 
 Reliability comes first: a frugal answer that is wrong is not a saving.
 
@@ -62,7 +62,7 @@ The method reads a system prompt the way a legal text is read: what it requires,
 
 See [CITATION.cff](CITATION.cff).
 
-> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.1.0. https://github.com/rimi-ai/rimi.convention
+> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.2.0. https://github.com/rimi-ai/rimi.convention
 
 ---
 
@@ -80,4 +80,4 @@ Un utilisateur répond « oui » à la question « option 1 ou option 2 ? ». Pl
 - Participer : issues (proposer une règle, signaler un cas réel, objecter), Discussions, pull requests en anglais et en français. Voir [CONTRIBUTING.md](CONTRIBUTING.md).
 - Licence : CC0, domaine public.
 
-Version 0.1.0, brouillon. La fiabilité passe avant la sobriété.
+Version 0.2.0, brouillon. La fiabilité passe avant la sobriété.
