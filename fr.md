@@ -59,7 +59,7 @@ La convention a trois niveaux : les principes disent pourquoi il y a un risque, 
 | --- | --- | --- | --- |
 | A — Comportement du LLM | Le LLM pendant la conversation | CONV | 35 (1 proposée, 34 en brouillon) |
 | B — Conception des prompts et des outils | Le concepteur, avant le déploiement | CONC | 11 en brouillon |
-| C — Sobriété | Le concepteur, le LLM et la personne qui formule la demande | SOB | 18 en brouillon |
+| C — Sobriété | Le concepteur, le LLM et la personne qui formule la demande | SOB | 20 en brouillon |
 
 Les parties A et B se répondent : une règle CONC bien appliquée réduit les situations où une règle CONV doit intervenir.
 
@@ -188,7 +188,7 @@ Ces onze règles s'appliquent au prompt système et aux schémas d'outils avant 
 
 ## Partie C — SOB-001 à SOB-020, règles de sobriété en brouillon
 
-Ces dix-huit règles visent à ne consommer que ce que la tâche exige. Elles s'adressent à trois publics : le concepteur du système, le LLM, et la personne qui formule la demande.
+Ces vingt règles visent à ne consommer que ce que la tâche exige. Elles s'adressent à trois publics : le concepteur du système, le LLM, et la personne qui formule la demande.
 
 **Hiérarchie : la fiabilité prime.** Une règle de sobriété ne s'applique jamais au détriment d'une règle des parties A ou B.
 

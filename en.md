@@ -59,7 +59,7 @@ The convention has three levels: principles say why there is a risk, rules say w
 | --- | --- | --- | --- |
 | A — LLM behaviour | The LLM during the conversation | CONV | 35 (1 proposed, 34 draft) |
 | B — Design of prompts and tools | The designer, before deployment | CONC | 11 draft |
-| C — Frugality | The designer, the LLM and the person making the request | SOB | 18 draft |
+| C — Frugality | The designer, the LLM and the person making the request | SOB | 20 draft |
 
 Parts A and B answer each other: a well-applied CONC rule reduces the situations in which a CONV rule has to step in.
 
@@ -188,7 +188,7 @@ These eleven rules apply to the system prompt and to tool schemas before deploym
 
 ## Part C — SOB-001 to SOB-020, draft frugality rules
 
-These eighteen rules aim to consume only what the task requires. They are addressed to three audiences: the system designer, the LLM, and the person making the request.
+These twenty rules aim to consume only what the task requires. They are addressed to three audiences: the system designer, the LLM, and the person making the request.
 
 **Hierarchy: reliability comes first.** A frugality rule never applies at the expense of a rule from Parts A or B.
 
