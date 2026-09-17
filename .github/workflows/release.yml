@@ -82,7 +82,7 @@ jobs:
         id: fingerprint
         run: echo "sha256=$(sha256sum convention.json | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
-      - uses: sigstore/cosign-installer@v4
+      - uses: sigstore/cosign-installer@v4.1.2
 
       - name: Sign, without any private key
         run: |
