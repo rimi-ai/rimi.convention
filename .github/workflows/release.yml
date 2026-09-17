@@ -1,13 +1,17 @@
 name: release
 
-# On a tag: rebuild convention.json from en.md, sign it without any private key
-# (Sigstore keyless: the identity is this workflow's OIDC token, the signature is
-# recorded in the public Rekor transparency log), attest where it came from,
-# attach it to the release, and check that GitHub Pages serves the same file.
+# When a release is published: rebuild convention.json from en.md, sign it with
+# no private key anywhere (Sigstore keyless: the identity is this workflow's OIDC
+# token, the signature is recorded in the public Rekor transparency log), attest
+# where it came from, attach it to the release, and check that GitHub Pages
+# serves the same file.
+#
+# The trigger is the published release, not the tag: the release notes are
+# written by a human, and the assets are attached to the release they describe.
 
 on:
-  push:
-    tags: ['v*']
+  release:
+    types: [published]
 
 permissions:
   contents: write      # attach the assets to the release
@@ -17,8 +21,12 @@ permissions:
 jobs:
   package:
     runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       - uses: actions/setup-python@v7
         with:
@@ -29,16 +37,15 @@ jobs:
 
       - name: The tag, the text and the projection say the same version
         run: |
-          tag="${GITHUB_REF_NAME}"
-          version="${tag#v}"
+          version="${TAG#v}"
           stated="$(python3 -c "import json; print(json.load(open('convention.json'))['convention_version'])")"
           if [ "$version" != "$stated" ]; then
-            echo "tag $tag does not match the version stated in the convention ($stated)." >&2
+            echo "release $TAG does not match the version stated in the convention ($stated)." >&2
             exit 1
           fi
-          if [ ! -f "versions/$tag/convention.json" ]; then
-            echo "versions/$tag/convention.json is missing." >&2
-            echo "Run python3 tools/build_convention_json.py --freeze and commit it before tagging." >&2
+          if [ ! -f "versions/$TAG/convention.json" ]; then
+            echo "versions/$TAG/convention.json is missing." >&2
+            echo "Run python3 tools/build_convention_json.py --freeze and commit it before releasing." >&2
             exit 1
           fi
 
@@ -46,7 +53,7 @@ jobs:
         run: python3 tools/build_convention_json.py --check
 
       - name: The frozen copy is byte-for-byte the published file
-        run: cmp convention.json "versions/${GITHUB_REF_NAME}/convention.json"
+        run: cmp convention.json "versions/$TAG/convention.json"
 
       - name: The file validates against the schema
         run: python3 tools/validate_convention_json.py convention.json
@@ -80,7 +87,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload "${GITHUB_REF_NAME}" \
+          gh release upload "$TAG" \
             convention.json convention.json.sig convention.json.pem --clobber
 
       - name: GitHub Pages serves this release
@@ -89,7 +96,7 @@ jobs:
           python3 tools/check_published.py \
             --file convention.json \
             --url "$site/convention.json" \
-            --url "$site/versions/${GITHUB_REF_NAME}/convention.json"
+            --url "$site/versions/$TAG/convention.json"
 
       - name: Summary
         run: |
@@ -97,9 +104,9 @@ jobs:
           {
             echo "### convention.json"
             echo
-            echo "- version: \`${GITHUB_REF_NAME}\`"
+            echo "- version: \`$TAG\`"
             echo "- sha256: \`${{ steps.fingerprint.outputs.sha256 }}\`"
             echo "- latest: $site/convention.json"
-            echo "- frozen: $site/versions/${GITHUB_REF_NAME}/convention.json"
+            echo "- frozen: $site/versions/$TAG/convention.json"
             echo "- signature: keyless (Sigstore), identity of this workflow, recorded in Rekor"
           } >> "$GITHUB_STEP_SUMMARY"
