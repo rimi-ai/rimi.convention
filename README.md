@@ -21,7 +21,7 @@
 
 ---
 
-**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.2.0](#what-is-inside-v020) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Where it comes from](#where-it-comes-from) · [Licence](#licence) · [How to cite](#how-to-cite) · [Français](#français)
+**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.2.0](#what-is-inside-v020) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
 
 ## What this is
 
@@ -96,10 +96,6 @@ The consensus happens here, in the open, with GitHub's own tools.
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) and [GOVERNANCE.md](GOVERNANCE.md) first.
 
-## Where it comes from
-
-The method reads a system prompt the way a legal text is read: what it requires, what it forgets, where two rules clash, where a word is vague. That way of reading has a long history in the interpretive tradition of the Talmud (the schools of Rabbi Ishmael and Rabbi Akiva). A series of articles tells that story; the convention itself stays technical. Sources are listed at the end of [en.md](en.md).
-
 ## Licence
 
 [CC0 1.0](LICENSE): public domain. Use it, copy it, build on it, in open or commercial products, with no permission needed. A citation is appreciated but not required.
@@ -112,13 +108,17 @@ See [CITATION.cff](CITATION.cff).
 
 This DOI always resolves to the latest version. Each version also has its own DOI on Zenodo (v0.2.0: [10.5281/zenodo.22816833](https://doi.org/10.5281/zenodo.22816833)).
 
+## Origin
+
+The method comes from audits of production prompts, read as normative texts. Its principles draw on a tradition of textual interpretation; details and sources are at the end of [en.md](en.md#origin-and-sources).
+
 ---
 
 ## Français
 
 **rimi. — pour une IA responsable : fiable, sobre, loyale.** · green friendly
 
-**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.2.0](#fr-contenu) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer)
+**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.2.0](#fr-contenu) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
 
 <a id="fr-en-bref"></a>
 ### En bref
@@ -200,5 +200,10 @@ Voir [CITATION.cff](CITATION.cff).
 > Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.2.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
 
 Ce DOI renvoie toujours à la dernière version. Chaque version a aussi son propre DOI sur Zenodo (v0.2.0 : [10.5281/zenodo.22816833](https://doi.org/10.5281/zenodo.22816833)).
+
+<a id="fr-origine"></a>
+### Origine
+
+La méthode vient d'audits de prompts en production, lus comme des textes normatifs. Ses principes s'inspirent d'une tradition d'interprétation des textes ; détails et sources à la fin de [fr.md](fr.md#origine-et-sources).
 
 Version 0.2.0, brouillon. La fiabilité passe avant la sobriété.
