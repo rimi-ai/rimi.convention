@@ -6,9 +6,11 @@ Run: python3 -m unittest discover -s tools -p 'test_*.py' -v
 
 from __future__ import annotations
 
+import io
 import json
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 
 import build_convention_json as build_module
@@ -171,3 +173,130 @@ class Obligations(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FrozenCopyDiscipline(unittest.TestCase):
+    """A file published with a release is never rewritten by a later build.
+
+    Each test plants the situation in a throwaway git repository whose only tag
+    is the version the text declares, then exercises the tool against it.
+    """
+
+    def setUp(self):
+        import shutil
+        import subprocess
+        from unittest.mock import patch
+
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.repo = Path(self.directory.name)
+        shutil.copy(SOURCE, self.repo / "en.md")
+        self.git("init", "--quiet", "--initial-branch=main")
+        self.git("add", "en.md")
+        self.git(
+            "-c", "user.email=test@example.invalid", "-c", "user.name=test",
+            "commit", "--quiet", "-m", "text",
+        )
+        self.git("tag", "v0.3.0")  # the version this text declares: it is released
+
+        for name, value in (
+            ("REPO_ROOT", self.repo),
+            ("DEFAULT_SOURCE", self.repo / "en.md"),
+            ("DEFAULT_OUTPUT", self.repo / "convention.json"),
+            ("VERSIONS_DIR", self.repo / "versions"),
+        ):
+            patcher = patch.object(build_module, name, value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+        self.frozen = self.repo / "versions" / "v0.3.0" / "convention.json"
+
+    def git(self, *arguments: str):
+        import subprocess
+
+        subprocess.run(
+            ["git", "-C", str(self.repo), *arguments], check=True, capture_output=True
+        )
+
+    def run_tool(self, *arguments: str) -> tuple[int, str]:
+        output = io.StringIO()
+        with redirect_stdout(output):
+            code = build_module.main(list(arguments))
+        return code, output.getvalue()
+
+    def freeze_from_tag(self):
+        """Write the frozen copy the way a repair does: from the text at the tag."""
+        self.frozen.parent.mkdir(parents=True, exist_ok=True)
+        code, _ = self.run_tool("--source", str(self.repo / "en.md"), "--output", str(self.frozen))
+        self.assertEqual(0, code)
+        return self.frozen.read_bytes()
+
+    def test_an_ordinary_build_never_writes_a_frozen_copy(self):
+        published = self.freeze_from_tag()
+        code, output = self.run_tool()
+        self.assertEqual(0, code)
+        self.assertEqual(published, self.frozen.read_bytes())
+        self.assertNotIn(str(self.frozen), output)
+
+    def test_an_ordinary_build_leaves_even_a_corrupted_copy_alone(self):
+        self.frozen.parent.mkdir(parents=True, exist_ok=True)
+        self.frozen.write_text("{}", encoding="utf-8")
+        self.run_tool()
+        self.assertEqual("{}", self.frozen.read_text(encoding="utf-8"))
+
+    def test_freeze_refuses_to_overwrite_a_released_version(self):
+        published = self.freeze_from_tag()
+        code, output = self.run_tool("--freeze")
+        self.assertEqual(2, code)
+        self.assertIn("already released", output)
+        self.assertIn("gh release download v0.3.0", output)
+        self.assertIn("shallow clone it protects nothing", output)
+        self.assertEqual(published, self.frozen.read_bytes())
+
+    def test_force_overrides_the_refusal_for_a_repair(self):
+        self.frozen.parent.mkdir(parents=True, exist_ok=True)
+        self.frozen.write_text("{}", encoding="utf-8")
+        code, _ = self.run_tool("--freeze", "--force")
+        self.assertEqual(0, code)
+        self.assertEqual("0.3.0", json.loads(self.frozen.read_text(encoding="utf-8"))["convention_version"])
+
+    def test_check_agrees_with_the_tag_check_after_a_correct_repair(self):
+        """The fault R11 demonstrated: after the right repair, both checks say the same thing."""
+        import check_frozen_versions
+
+        self.freeze_from_tag()  # the copy as published at the tag
+        source = self.repo / "en.md"
+        source.write_text(
+            source.read_text(encoding="utf-8").replace(
+                "MUST say the data is missing or not established.",
+                "MUST say the data is missing or not established, or estimate it.",
+            ),
+            encoding="utf-8",
+        )
+        self.run_tool()  # ordinary build: root only
+
+        code, output = self.run_tool("--check")
+        self.assertEqual(0, code, output)
+        self.assertIn("raise the version number", output)
+        self.assertNotIn("--freeze", output)
+
+        tag_output = io.StringIO()
+        with redirect_stdout(tag_output):
+            tag_code = check_frozen_versions.check(self.repo)
+        self.assertEqual(0, tag_code, tag_output.getvalue())
+
+    def test_check_still_requires_the_copy_of_an_unreleased_version(self):
+        source = self.repo / "en.md"
+        source.write_text(
+            source.read_text(encoding="utf-8").replace("Version 0.3.0 ·", "Version 0.4.0 ·", 1),
+            encoding="utf-8",
+        )
+        self.run_tool()
+
+        code, output = self.run_tool("--check")
+        self.assertEqual(1, code)
+        self.assertIn("is missing", output)
+        self.assertIn("--freeze", output)
+
+        self.assertEqual(0, self.run_tool("--freeze")[0])  # unreleased: allowed
+        self.assertEqual(0, self.run_tool("--check")[0])

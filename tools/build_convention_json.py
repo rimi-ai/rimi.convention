@@ -13,6 +13,21 @@ Usage:
 Determinism: the same en.md always produces the same bytes. `generated_at` is
 the only field that depends on the run; it is kept apart and excluded from
 every comparison and from text_sha256.
+
+A published copy is never rewritten. `versions/v<x.y.z>/convention.json` is the
+file that went out with release v<x.y.z>, so:
+
+  * an ordinary build writes convention.json and nothing else — it never touches
+    versions/, whatever is already there;
+  * `--freeze` writes the frozen copy, and refuses when that version is already
+    tagged (`--force` overrides, for repairing a copy that was corrupted);
+  * `--check` compares the frozen copy against the current text only while that
+    version is unreleased. Once it is tagged, its copy answers to its tag, and
+    tools/check_frozen_versions.py is what checks it.
+
+The refusal in `--freeze` reads the repository's tags: in a shallow clone there
+are none, and the refusal silently stops protecting anything. It is a
+convenience, not the guarantee. The guarantee is check_frozen_versions.py in CI.
 """
 
 from __future__ import annotations
@@ -25,6 +40,8 @@ import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+from check_frozen_versions import released_tags, text_at_tag
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_SOURCE = REPO_ROOT / "en.md"
@@ -487,7 +504,7 @@ def frozen_path(document: dict) -> Path:
     return VERSIONS_DIR / f"v{document['convention_version']}" / "convention.json"
 
 
-def report_difference(path: Path, expected: dict, found: dict) -> None:
+def report_difference(path: Path, expected: dict, found: dict, advice: str) -> None:
     diff = difflib.unified_diff(
         serialise(body_of(found)).splitlines(),
         serialise(body_of(expected)).splitlines(),
@@ -496,7 +513,7 @@ def report_difference(path: Path, expected: dict, found: dict) -> None:
         lineterm="",
         n=2,
     )
-    print(f"{path} is not the projection of en.md. Run: python3 tools/build_convention_json.py")
+    print(f"{path} is not the projection of en.md. {advice}")
     for line in list(diff)[:60]:
         print(line)
 
@@ -518,7 +535,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--freeze",
         action="store_true",
-        help="also write versions/v<version>/convention.json, the frozen copy of this version",
+        help="write versions/v<version>/convention.json, the frozen copy of this version",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="with --freeze: overwrite the copy of an already released version (repair only)",
     )
     args = parser.parse_args(argv)
 
@@ -528,32 +550,71 @@ def main(argv: list[str] | None = None) -> int:
         print(f"en.md no longer has the expected shape: {error}", file=sys.stderr)
         return 2
 
-    targets = [args.output]
     frozen = frozen_path(document)
     publishing = args.output.resolve() == DEFAULT_OUTPUT.resolve()
     if args.freeze and not publishing:
         print("--freeze only makes sense with the published convention.json", file=sys.stderr)
         return 2
-    if publishing and (args.check or args.freeze or frozen.exists()):
-        # Under --check the frozen copy of the current version is required:
-        # a version bump that forgets to freeze it is caught here, not at release.
-        targets.append(frozen)
+
+    tag = f"v{document['convention_version']}"
+    released = publishing and tag in released_tags(REPO_ROOT)
 
     if args.check:
+        targets = [args.output]
+        if publishing and not released:
+            # While a version is unreleased its frozen copy must follow the text:
+            # a version bump that forgets to freeze is caught here, not at release.
+            targets.append(frozen)
+
         failures = 0
         for path in targets:
+            advice = (
+                "Run: python3 tools/build_convention_json.py --freeze"
+                if path == frozen
+                else "Run: python3 tools/build_convention_json.py"
+            )
             if not path.exists():
-                print(f"{path} is missing. Run: python3 tools/build_convention_json.py --freeze")
+                print(f"{path} is missing. {advice}")
                 failures += 1
                 continue
             committed = load(path)
             if body_of(committed) != body_of(document):
-                report_difference(path, document, committed)
+                report_difference(path, document, committed, advice)
                 failures += 1
+
+        if released:
+            print(
+                f"note: version {document['convention_version']} is already released ({tag}). "
+                f"Its frozen copy answers to that tag, not to the text as it is now — "
+                f"tools/check_frozen_versions.py is what checks it."
+            )
+            published_text = text_at_tag(REPO_ROOT, tag)
+            if published_text is not None and published_text != args.source.read_bytes():
+                print(
+                    f"      en.md has changed since {tag} went out. The clean way out is to raise "
+                    f"the version number in en.md; rebuilding the published copy to match would "
+                    f"rewrite a file that has been signed."
+                )
+
         if failures:
             return 1
         print(f"convention.json is the projection of en.md ({len(document['rules'])} rules).")
         return 0
+
+    targets = [args.output]
+    if args.freeze:
+        if released and not args.force:
+            print(
+                f"refusing to write {frozen}: {tag} is already released, and that copy is the "
+                f"file published with it.\n"
+                f"    If the text has changed, raise the version number in en.md.\n"
+                f"    To repair a corrupted copy, restore the signed asset:\n"
+                f"      gh release download {tag} --pattern convention.json --dir versions/{tag}\n"
+                f"    --force overrides this refusal. It reads the repository's tags, so in a "
+                f"shallow clone it protects nothing: the guarantee is check_frozen_versions.py in CI."
+            )
+            return 2
+        targets.append(frozen)
 
     for path in targets:
         path.parent.mkdir(parents=True, exist_ok=True)

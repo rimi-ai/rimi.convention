@@ -78,6 +78,9 @@ jobs:
       - name: The file validates against the schema
         run: python3 tools/validate_convention_json.py convention.json
 
+      - name: No published copy has been rewritten since its own release
+        run: python3 tools/check_frozen_versions.py
+
       - name: Fingerprint
         id: fingerprint
         run: echo "sha256=$(sha256sum convention.json | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
