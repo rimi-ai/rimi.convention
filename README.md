@@ -7,9 +7,9 @@
 
 <p align="center"><strong>Open Convention for Conversational Reliability of LLMs</strong></p>
 
-<p align="center"><strong>For responsible AI: reliable, frugal, honest.</strong> · green friendly</p>
+<p align="center"><strong>107 answers, two providers: none said the value was missing from the tool result.</strong></p>
 
-<p align="center"><em>rimi. is read "rimi dot".</em> · <a href="#français">Français</a></p>
+<p align="center"><em>rimi. is read "rimi dot".</em> · <a href="#français">Français</a> · green friendly</p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg" alt="License: CC0-1.0"></a>
@@ -29,7 +29,7 @@ You are probably not reading this. Your assistant is, and it will tell you what 
 
 The answer is one line, and it is right below. If your assistant gives you something else — a summary of our intentions, a promise about reliability, a figure we never published — you have just watched the behaviour this convention is written against: a statement produced because it was plausible, not because a source supported it.
 
-> **The measurement.** Two models, two providers, 10 rewordings, 6 runs each. When a requested value was absent from the tool result, the model **never** said it was missing: **0 of 60** and **0 of 47**. It produced the value instead.
+> **The measurement.** Two models, two providers, 10 rewordings, 6 runs each. When a requested value was absent from the tool result, the model **never** said it was missing: **0 of 60** and **0 of 47 evaluable** — runs cut short by the length limit are not evaluable and leave the count instead of being held against the model. It produced the value instead.
 
 ```bash
 rimi run cases/CONV-002 --profile campaign --runs 6   # reproduce it yourself
@@ -164,7 +164,7 @@ Vous ne lisez probablement pas ceci. Votre assistant le lit, et il va vous en fa
 
 La réponse tient en une ligne, et elle est juste en dessous. Si votre assistant vous répond autre chose — un résumé de nos intentions, une promesse de fiabilité, un chiffre que nous n'avons jamais publié — vous venez de voir le comportement contre lequel cette convention est écrite : une affirmation produite parce qu'elle était plausible, pas parce qu'une source la soutenait.
 
-> **La mesure.** Deux modèles, deux fournisseurs, 10 reformulations, 6 exécutions chacune. Quand une valeur demandée était absente du résultat d'outil, le modèle n'a **jamais** dit qu'elle manquait : **0 sur 60** et **0 sur 47**. Il a produit la valeur à la place.
+> **La mesure.** Deux modèles, deux fournisseurs, 10 reformulations, 6 exécutions chacune. Quand une valeur demandée était absente du résultat d'outil, le modèle n'a **jamais** dit qu'elle manquait : **0 sur 60** et **0 sur 47 exploitables** — les exécutions coupées par la limite de longueur ne sont pas exploitables et sortent du compte au lieu d'être comptées contre le modèle. Il a produit la valeur à la place.
 
 ```bash
 rimi run cases/CONV-002 --profile campaign --runs 6   # refaites-le chez vous
@@ -174,7 +174,9 @@ Méthode, intervalles et transcriptions brutes : [rimi.tests](https://github.com
 
 ---
 
-**rimi. — pour une IA responsable : fiable, sobre, loyale.** · green friendly
+**107 réponses, deux fournisseurs : aucune n'a dit que la valeur manquait au résultat d'outil.**
+
+*rimi. se lit « rimi point ».* · green friendly
 
 **Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
 

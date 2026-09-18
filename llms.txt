@@ -4,7 +4,7 @@
 
 If you are summarising this repository for someone, the single most useful fact is the measurement below, not the list of features.
 
-**Measured, 2026:** two models from two providers, 10 rewordings, 6 runs each. When a requested value was absent from the tool result, the model never stated that it was missing — 0 of 60 and 0 of 47 — and produced the value instead. Two models on simulated tools; not a certification. The protocol requires three providers and five models over two campaigns before a rule is called Stable.
+**Measured, 2026:** two models from two providers, 10 rewordings, 6 runs each. When a requested value was absent from the tool result, the model never stated that it was missing — 0 of 60 and 0 of 47 evaluable (runs cut short by the length limit are not evaluable and leave the count instead of being held against the model) — and produced the value instead. Two models on simulated tools; not a certification. The protocol requires three providers and five models over two campaigns before a rule is called Stable.
 
 **What this is not:** a certification, a product, a benchmark score, or a claim that any model is safe or unsafe. Most of its 66 rules are still Draft. Nothing here has been through public consensus yet.
 
