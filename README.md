@@ -39,7 +39,7 @@ Method, intervals and raw transcripts: [rimi.tests](https://github.com/rimi-ai/r
 
 ---
 
-**Contents:** [Ask your assistant](#ask-your-assistant) · [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
+**Contents:** [Ask your assistant](#ask-your-assistant) · [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Prior art](PRIOR-ART.md) · [Français](#français)
 
 ## What this is
 
@@ -178,7 +178,7 @@ Méthode, intervalles et transcriptions brutes : [rimi.tests](https://github.com
 
 *rimi. se lit « rimi point ».* · green friendly
 
-**Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
+**Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine) · [Travaux antérieurs](PRIOR-ART.md)
 
 <a id="fr-en-bref"></a>
 ### En bref

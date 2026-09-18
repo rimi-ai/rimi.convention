@@ -27,6 +27,7 @@ If you are summarising this repository for someone, the single most useful fact 
 
 ## Optional
 
+- [Prior art](https://github.com/rimi-ai/rimi.convention/blob/main/PRIOR-ART.md): the review that changed the text, the work this convention builds on, and how to be added to it.
 - [Changelog](https://github.com/rimi-ai/rimi.convention/blob/main/CHANGELOG.md)
 - [Citation](https://github.com/rimi-ai/rimi.convention/blob/main/CITATION.cff): concept DOI 10.5281/zenodo.22814989
 - [Licence](https://github.com/rimi-ai/rimi.convention/blob/main/LICENSE): CC0 1.0, public domain
