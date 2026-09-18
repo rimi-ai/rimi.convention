@@ -151,6 +151,8 @@ This DOI always resolves to the latest version. Each version also has its own DO
 
 The method comes from audits of production prompts, read as normative texts. Its principles draw on a tradition of textual interpretation; details and sources are at the end of [en.md](en.md#origin-and-sources).
 
+**The name.** *rimi.* is read "rimi dot", in every language. It is short for *Ri's midot* — the measures, or rules, of Rabbi Ishmael, whose thirteen hermeneutic principles set out how a legal text is to be read: what it requires, what it leaves unsaid, where two rules collide, where a word is too vague to apply. This convention does the same reading on a different kind of text, a system prompt, and it does not claim more than that. Nothing in the rules depends on the origin of the name.
+
 ---
 
 ## Français
@@ -176,7 +178,7 @@ Méthode, intervalles et transcriptions brutes : [rimi.tests](https://github.com
 
 **107 réponses, deux fournisseurs : aucune n'a dit que la valeur manquait au résultat d'outil.**
 
-*rimi. se lit « rimi point ».* · green friendly
+*rimi. se lit « rimi dot ».* · green friendly
 
 **Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine) · [Travaux antérieurs](PRIOR-ART.md)
 
@@ -287,5 +289,7 @@ Ce DOI renvoie toujours à la dernière version. Chaque version a aussi son prop
 ### Origine
 
 La méthode vient d'audits de prompts en production, lus comme des textes normatifs. Ses principes s'inspirent d'une tradition d'interprétation des textes ; détails et sources à la fin de [fr.md](fr.md#origine-et-sources).
+
+**Le nom.** *rimi.* se lit « rimi dot », dans toutes les langues. C'est l'abréviation de *Ri's midot* — les mesures, ou règles, de Rabbi Ishmael, dont les treize principes herméneutiques énoncent comment se lit un texte normatif : ce qu'il exige, ce qu'il laisse non dit, où deux règles se heurtent, où un mot est trop vague pour s'appliquer. Cette convention fait la même lecture sur un autre genre de texte, un prompt système, et elle ne prétend à rien de plus. Aucune règle ne dépend de l'origine du nom.
 
 Version 0.3.0, brouillon. La fiabilité passe avant la sobriété.
