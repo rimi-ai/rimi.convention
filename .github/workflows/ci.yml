@@ -2,6 +2,11 @@ name: convention.json
 
 # The text is the source. convention.json is only its projection: this workflow
 # rebuilds it from en.md and fails when the committed file no longer matches.
+#
+# It also holds two things the projection cannot check on its own: that a copy
+# published with a release still projects the text of that release, and that the
+# two languages still carry the same rules — the same rules in the same order,
+# with the same principle and the same obligations. Structure, never meaning.
 
 on:
   push:
@@ -16,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0   # the tags are needed: a frozen copy is checked against its own tag
 
       - uses: actions/setup-python@v7
         with:
@@ -29,6 +36,12 @@ jobs:
 
       - name: Every published copy validates against the schema
         run: python3 tools/validate_convention_json.py
+
+      - name: Every frozen copy still projects the text of its own tag
+        run: python3 tools/check_frozen_versions.py
+
+      - name: The two languages still carry the same rules (structure, not meaning)
+        run: python3 tools/check_translation_parity.py
 
       - name: Tests
         run: python3 -m unittest discover -s tools -p 'test_*.py' -v
