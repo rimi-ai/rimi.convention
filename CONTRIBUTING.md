@@ -48,6 +48,10 @@ Remove names, phone numbers, emails, booking references, prices tied to a person
 
 Short sentences. One obligation per bullet. No marketing words. Sources go in the *Origin and sources* section, not inline.
 
+**The name is not translated.** *rimi.* is written lowercase with the dot, and read "rimi dot" in every language. It is a mark, not a phrase: do not translate the pronunciation, and do not capitalise it at the start of a sentence.
+
+**Rule identifiers are not translated either.** `CONV-001`, `CONC-012`, `SOB-019`, `P-03` keep their letters, their number and their case in both languages. They are labels, not words: do not translate them, do not renumber them, do not lowercase them to fit a sentence. They are never reassigned either — see *Before you start*.
+
 ## Licence of contributions
 
 By contributing, you agree to dedicate your contribution to the public domain under [CC0 1.0](LICENSE).
@@ -61,4 +65,6 @@ By contributing, you agree to dedicate your contribution to the public domain un
 - Une bonne règle est vérifiable, indépendante des modèles, annoncée par le LLM, corrigeable par l'utilisateur, et appuyée par un cas réel anonymisé et un cas de test.
 - Anonymisez tout cas réel : aucun nom, numéro, email, référence de dossier ni nom de système interne.
 - Les identifiants ne sont jamais réattribués.
+- **Le nom ne se traduit pas.** *rimi.* s'écrit en minuscules avec le point, et se lit « rimi dot » dans toutes les langues. C'est une marque, pas une phrase : ne pas traduire la prononciation, ne pas la capitaliser en début de phrase.
+- **Les identifiants de règles ne se traduisent pas non plus.** `CONV-001`, `CONC-012`, `SOB-019`, `P-03` gardent leurs lettres, leur numéro et leur casse dans les deux langues. Ce sont des étiquettes, pas des mots : ne pas les traduire, ne pas les renuméroter, ne pas les passer en minuscules pour les fondre dans une phrase.
 - En contribuant, vous placez votre contribution dans le domaine public (CC0 1.0).
