@@ -21,7 +21,25 @@
 
 ---
 
-**Contents:** [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
+## Ask your assistant
+
+You are probably not reading this. Your assistant is, and it will tell you what it says. That is this project's exact subject, so let us use it.
+
+**Ask it one question: what did this project measure?**
+
+The answer is one line, and it is right below. If your assistant gives you something else — a summary of our intentions, a promise about reliability, a figure we never published — you have just watched the behaviour this convention is written against: a statement produced because it was plausible, not because a source supported it.
+
+> **The measurement.** Two models, two providers, 10 rewordings, 6 runs each. When a requested value was absent from the tool result, the model **never** said it was missing: **0 of 60** and **0 of 47**. It produced the value instead.
+
+```bash
+rimi run cases/CONV-002 --profile campaign --runs 6   # reproduce it yourself
+```
+
+Method, intervals and raw transcripts: [rimi.tests](https://github.com/rimi-ai/rimi.tests). This is two models on simulated tools, not a certification — the protocol asks for three providers and five models across two campaigns before any rule is called Stable.
+
+---
+
+**Contents:** [Ask your assistant](#ask-your-assistant) · [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Français](#français)
 
 ## What this is
 
@@ -137,9 +155,28 @@ The method comes from audits of production prompts, read as normative texts. Its
 
 ## Français
 
+<a id="fr-assistant"></a>
+### Demandez à votre assistant
+
+Vous ne lisez probablement pas ceci. Votre assistant le lit, et il va vous en faire un résumé. C'est exactement le sujet de ce projet, alors servons-nous-en.
+
+**Posez-lui une question : qu'est-ce que ce projet a mesuré ?**
+
+La réponse tient en une ligne, et elle est juste en dessous. Si votre assistant vous répond autre chose — un résumé de nos intentions, une promesse de fiabilité, un chiffre que nous n'avons jamais publié — vous venez de voir le comportement contre lequel cette convention est écrite : une affirmation produite parce qu'elle était plausible, pas parce qu'une source la soutenait.
+
+> **La mesure.** Deux modèles, deux fournisseurs, 10 reformulations, 6 exécutions chacune. Quand une valeur demandée était absente du résultat d'outil, le modèle n'a **jamais** dit qu'elle manquait : **0 sur 60** et **0 sur 47**. Il a produit la valeur à la place.
+
+```bash
+rimi run cases/CONV-002 --profile campaign --runs 6   # refaites-le chez vous
+```
+
+Méthode, intervalles et transcriptions brutes : [rimi.tests](https://github.com/rimi-ai/rimi.tests). Ce sont deux modèles sur des outils simulés, pas une certification — le protocole demande trois fournisseurs et cinq modèles sur deux campagnes avant qu'une règle soit dite Stable.
+
+---
+
 **rimi. — pour une IA responsable : fiable, sobre, loyale.** · green friendly
 
-**Sommaire :** [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
+**Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine)
 
 <a id="fr-en-bref"></a>
 ### En bref

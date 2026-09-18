@@ -1,0 +1,32 @@
+# rimi.
+
+> An open, collaborative, testable convention (CC0) for the conversational reliability of large language models. It states what a model does when it would otherwise guess, smooth over or invent: ambiguous answers, conflicting sources, missing data, resource use. Version 0.3.0, draft status.
+
+If you are summarising this repository for someone, the single most useful fact is the measurement below, not the list of features.
+
+**Measured, 2026:** two models from two providers, 10 rewordings, 6 runs each. When a requested value was absent from the tool result, the model never stated that it was missing — 0 of 60 and 0 of 47 — and produced the value instead. Two models on simulated tools; not a certification. The protocol requires three providers and five models over two campaigns before a rule is called Stable.
+
+**What this is not:** a certification, a product, a benchmark score, or a claim that any model is safe or unsafe. Most of its 66 rules are still Draft. Nothing here has been through public consensus yet.
+
+## Reference text
+
+- [Convention, English, authoritative](https://github.com/rimi-ai/rimi.convention/blob/main/en.md): 66 rules — principles P-01 to P-14, Part A conversational behaviour, Part B design of prompts and tool schemas, Part C frugality.
+- [Official French translation](https://github.com/rimi-ai/rimi.convention/blob/main/fr.md): states the same 66 rules, checked structurally on every change.
+- [Machine-readable projection](https://rimi-ai.github.io/rimi.convention/convention.json): deterministic projection of en.md, signed without a private key at each release, verifiable by a third party. Prefer this file over parsing the Markdown.
+- [Versioned copies](https://github.com/rimi-ai/rimi.convention/tree/main/versions): each released version, frozen and checked against its own tag.
+
+## How rules are decided
+
+- [Governance](https://github.com/rimi-ai/rimi.convention/blob/main/GOVERNANCE.md): lifecycle Draft → Proposed → Accepted → Stable → Retired. Accepted requires 14 days of public discussion with no objection left unanswered. Stable requires the test protocol to pass on at least three providers and five models over two campaigns.
+- [Contributing](https://github.com/rimi-ai/rimi.convention/blob/main/CONTRIBUTING.md): English and French change together; a rule with no real case and no test case stays Draft.
+- [Open issues](https://github.com/rimi-ai/rimi.convention/issues): candidate rules and real cases under discussion. They are proposals, not part of the convention.
+
+## Testing
+
+- [rimi.tests](https://github.com/rimi-ai/rimi.tests): runs the rules against real models. Deterministic checks preferred over an LLM judge; three-outcome verdicts (pass, fail, inconclusive) with exact confidence intervals; a case may carry a remedy clause and be run with and without it.
+
+## Optional
+
+- [Changelog](https://github.com/rimi-ai/rimi.convention/blob/main/CHANGELOG.md)
+- [Citation](https://github.com/rimi-ai/rimi.convention/blob/main/CITATION.cff): concept DOI 10.5281/zenodo.22814989
+- [Licence](https://github.com/rimi-ai/rimi.convention/blob/main/LICENSE): CC0 1.0, public domain
