@@ -119,7 +119,7 @@ A rule is Accepted after at least 14 days of public discussion with no objection
 
 ## Honest scope
 
-This is a **v0 draft**. The rules come from real production audits of conversational agents (travel booking and other domains, anonymised). Most rules are still Draft: they need more real cases, test cases and public discussion before they become Accepted. Nothing here is a certification.
+This is a **v0 draft**. The rules come from real production audits of conversational agents (travel booking and other domains, anonymised). Most rules are still Draft: they need more real cases, test cases and public discussion before they become Accepted. Which rules have test cases today, and which can have them, is listed rule by rule in [COVERAGE.md](https://github.com/rimi-ai/rimi.tests/blob/main/COVERAGE.md). Nothing here is a certification.
 
 ## How to take part
 
