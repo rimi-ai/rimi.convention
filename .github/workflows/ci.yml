@@ -43,5 +43,5 @@ jobs:
       - name: The two languages state the same obligations, in table rows and in rule bodies (structure, not meaning)
         run: python3 tools/check_translation_parity.py
 
-      - name: Tool tests, planted defects included: each check is shown failing on the fault it exists for
+      - name: Tool tests — each check is shown failing on the planted fault it exists for
         run: python3 -m unittest discover -s tools -p 'test_*.py' -v
