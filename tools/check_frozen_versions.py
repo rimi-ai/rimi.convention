@@ -39,9 +39,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import re
 import subprocess
+import tarfile
 import tempfile
 from pathlib import Path
 
@@ -69,12 +71,19 @@ def text_at_tag(repo: Path, tag: str) -> bytes | None:
 
 
 def builder_at_tag(repo: Path, tag: str, into: Path) -> tuple[Path, str]:
-    """The builder that belongs to this tag, or this repository's, said plainly."""
-    result = git(repo, "show", f"{tag}:tools/build_convention_json.py")
+    """The builder that belongs to this tag, or this repository's, said plainly.
+
+    The whole `tools/` tree of the tag is extracted, not the one file: the
+    builder imports its neighbours, and a lone script fails on the first
+    import. Found on v0.3.1, the first tag to carry a builder at all.
+    """
+    result = git(repo, "archive", tag, "tools")
     if result.returncode == 0:
-        path = into / "build_convention_json.py"
-        path.write_bytes(result.stdout)
-        return path, f"the builder at {tag}"
+        with tarfile.open(fileobj=io.BytesIO(result.stdout)) as archive:
+            archive.extractall(into, filter="data")
+        builder = into / "tools" / "build_convention_json.py"
+        if builder.exists():
+            return builder, f"the builder at {tag}"
     return REPO_ROOT / "tools" / "build_convention_json.py", (
         f"this repository's builder ({tag} carries none)"
     )
