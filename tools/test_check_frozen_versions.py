@@ -22,21 +22,37 @@ from pathlib import Path
 
 import check_frozen_versions as checker
 
-TAG = "v9.9.9"
-TEXT_AT_TAG = "# convention\n\nVersion 9.9.9 · text as published\n"
-TEXT_AFTER = "# convention\n\nVersion 9.9.9 · text quietly changed\n"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+BUILDER = REPO_ROOT / "tools" / "build_convention_json.py"
+
+# The tag's text has to be text the builder can project: since R30 the check
+# rebuilds it and compares the result, so a placeholder would prove nothing.
+TAG = "v0.3.0"
+TEXT_AT_TAG = (REPO_ROOT / "en.md").read_text(encoding="utf-8")
+TEXT_AFTER = TEXT_AT_TAG.replace(
+    "These thirty-four rules come from drifts observed in production",
+    "These thirty-four rules come from drifts observed in production, quietly reworded",
+)
 
 
-def frozen_document(text: str, version: str = "9.9.9") -> str:
-    return json.dumps(
-        {
-            "convention_version": version,
-            "generated_at": "2026-01-01T00:00:00Z",
-            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
-            "rules": [],
-        },
-        indent=2,
-    )
+def build(text: str) -> dict:
+    """Project a text with this repository's builder, as the check itself does."""
+    with tempfile.TemporaryDirectory() as workspace:
+        source = Path(workspace) / "en.md"
+        source.write_text(text, encoding="utf-8")
+        output = Path(workspace) / "convention.json"
+        subprocess.run(
+            ["python3", str(BUILDER), "--source", str(source), "--output", str(output)],
+            check=True, capture_output=True,
+        )
+        return json.loads(output.read_text(encoding="utf-8"))
+
+
+def frozen_document(text: str, version: str = "0.3.0") -> str:
+    document = build(text)
+    document["convention_version"] = version
+    assert document["text_sha256"] == hashlib.sha256(text.encode("utf-8")).hexdigest()
+    return json.dumps(document, indent=2, ensure_ascii=False)
 
 
 class FrozenCopies(unittest.TestCase):
@@ -58,7 +74,7 @@ class FrozenCopies(unittest.TestCase):
             ["git", "-C", str(self.repo), *arguments], check=True, capture_output=True
         )
 
-    def freeze(self, text: str, version: str = "9.9.9", tag: str = TAG):
+    def freeze(self, text: str, version: str = "0.3.0", tag: str = TAG):
         path = self.repo / "versions" / tag / "convention.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(frozen_document(text, version), encoding="utf-8")
@@ -82,11 +98,46 @@ class FrozenCopies(unittest.TestCase):
         self.freeze(TEXT_AFTER)  # what an ordinary build does today
         code, output = self.run_check()
         self.assertEqual(1, code)
-        self.assertIn("no longer projects the text published at v9.9.9", output)
+        self.assertIn("no longer projects the text published at v0.3.0", output)
         self.assertIn("gh release download", output)  # the repair is spelled out
 
+    def test_an_obligation_edited_inside_the_frozen_copy_is_caught(self):
+        """The second half of the fault, found in a follow-up review, September 2026.
+
+        The fingerprint answers for the text, and the text has not moved: an
+        obligation turned from MUST into SHOULD inside the published file left
+        text_sha256 intact, and the check passed. Only rebuilding the projection
+        and comparing it field by field sees this.
+        """
+        path = self.freeze(TEXT_AT_TAG)
+        document = json.loads(path.read_text(encoding="utf-8"))
+        rule = next(r for r in document["rules"] if r["id"] == "CONV-002")
+        self.assertEqual("MUST", rule["obligations"][0]["level"])
+        rule["obligations"][0]["level"] = "SHOULD"
+        path.write_text(json.dumps(document, indent=2, ensure_ascii=False), encoding="utf-8")
+
+        # The fingerprint still matches — which is exactly why it was not enough.
+        self.assertEqual(
+            hashlib.sha256(TEXT_AT_TAG.encode("utf-8")).hexdigest(),
+            json.loads(path.read_text(encoding="utf-8"))["text_sha256"],
+        )
+
+        code, output = self.run_check()
+        self.assertEqual(1, code, output)
+        self.assertIn("is not what the text at v0.3.0 projects", output)
+        self.assertIn("obligations[0].level: rebuilt 'MUST', frozen copy 'SHOULD'", output)
+
+    def test_a_rule_dropped_from_the_frozen_copy_is_caught(self):
+        path = self.freeze(TEXT_AT_TAG)
+        document = json.loads(path.read_text(encoding="utf-8"))
+        document["rules"] = [r for r in document["rules"] if r["id"] != "CONV-002"]
+        path.write_text(json.dumps(document, indent=2, ensure_ascii=False), encoding="utf-8")
+        code, output = self.run_check()
+        self.assertEqual(1, code, output)
+        self.assertIn("entries rebuilt", output)
+
     def test_a_version_that_contradicts_its_folder_is_caught(self):
-        self.freeze(TEXT_AT_TAG, version="9.9.8")
+        self.freeze(TEXT_AT_TAG, version="0.3.1")
         code, output = self.run_check()
         self.assertEqual(1, code)
         self.assertIn("inside a folder named", output)

@@ -37,11 +37,11 @@ jobs:
       - name: Every published copy validates against the schema
         run: python3 tools/validate_convention_json.py
 
-      - name: Every frozen copy still projects the text of its own tag
+      - name: Every frozen copy is what its own tag projects — fingerprint and content
         run: python3 tools/check_frozen_versions.py
 
-      - name: The two languages still carry the same rules (structure, not meaning)
+      - name: The two languages state the same obligations, in table rows and in rule bodies (structure, not meaning)
         run: python3 tools/check_translation_parity.py
 
-      - name: Tests
+      - name: Tool tests, planted defects included: each check is shown failing on the fault it exists for
         run: python3 -m unittest discover -s tools -p 'test_*.py' -v

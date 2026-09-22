@@ -6,7 +6,9 @@ This convention did not appear from nothing, and several of its rules exist beca
 
 The statistical analysis of our test protocol came from an external reviewer who executed this repository rather than reading it, and demonstrated by sabotage that our pass rule could not decide: at 50 runs and a 95% bar, two teams testing the same conformant system reach opposite verdicts roughly half the time, and a perfect system fails once in five when judged by a judge with a 3% false-fail rate.
 
-That review is why v0.4.0 will carry three-outcome verdicts with exact intervals instead of a binary pass. It also produced the real case now filed as issue #8, and pointed out that a released version could be silently rewritten — a defect we reproduced and closed.
+That review is why v0.4.0 will carry three-outcome verdicts with exact intervals instead of a binary pass. It also produced the real case now filed as issue #8, and pointed out that a released version could be silently rewritten.
+
+That last defect took two passes to close, and we did not see the second one. The first pass stopped an ordinary build from overwriting a published copy. On 20 September 2026 the same reviewer came back and showed that the guard we had added answered for the text and not for the file: an obligation edited inside a frozen copy — MUST turned into SHOULD — left its fingerprint untouched, because the fingerprint covers the source. A second guard in the same review: the translation check compared table rows and never the body of a rule written out in full, so a DOIT could become a DEVRAIT in one language, in the rule most used as an example, and nothing said a word. Both are now checked by content, and both faults are planted in the test suite so that a check that stops seeing them fails. Claiming the first half closed was our error, not the reviewer's.
 
 The reviewer offered code under CC0. We did not use it: the tools in `tools/` were written here, in the style of the existing ones. The finding is theirs; the implementation is ours.
 

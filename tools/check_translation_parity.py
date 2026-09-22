@@ -5,10 +5,16 @@ WHAT THIS CHECKS
   1. Every rule identifier occurs in both texts, the same number of times, in
      the same order — its own row, its row in the mapping table, every mention.
   2. Each rule's row declares the same principle (P-xx) in both texts.
-  3. Each row states the same number of obligations of each level. English
-     MUST / MUST NOT / SHOULD / SHOULD NOT / MAY are counted against French
-     DOIT / NE DOIT PAS · PLUS · JAMAIS / DEVRAIT / NE DEVRAIT PAS / PEUT, in
-     singular and plural.
+  3. Each rule's row states the same number of obligations of each level.
+     English MUST / MUST NOT / SHOULD / SHOULD NOT / MAY are counted against
+     French DOIT / NE DOIT PAS · PLUS · JAMAIS / DEVRAIT / NE DEVRAIT PAS /
+     PEUT, in singular and plural.
+  4. The same count, in the BODY of every rule written out in full — the
+     section whose heading names one rule and no other. Until September 2026
+     this check read the table rows only, so an obligation could be weakened
+     in a rule's own body, in one language, and nothing said a word. That was
+     demonstrated on a copy of this repository: one DOIT turned into DEVRAIT
+     inside CONV-001, and the check stayed green.
 
 WHAT THIS DOES NOT CHECK — AND NEVER WILL
   Meaning. Two sentences can pass every check above and say different things.
@@ -93,6 +99,31 @@ def rule_rows(text: str) -> dict[str, list[tuple[int, str]]]:
     return rows
 
 
+def rule_bodies(text: str) -> dict[str, tuple[int, str]]:
+    """Sections written for one rule and one only, keyed by that rule.
+
+    A heading that names several rules ("CONV-002 to CONV-035") introduces a
+    table, and its rows are compared elsewhere. A heading that names exactly one
+    rule introduces that rule's full template — situation, obligations,
+    exceptions, test cases — which nothing compared until R30.
+    """
+    bodies: dict[str, tuple[int, str]] = {}
+    lines = text.split("\n")
+    heads = [(i, line) for i, line in enumerate(lines) if line.startswith("#")]
+    for position, (index, line) in enumerate(heads):
+        named = set(RULE_RE.findall(line))
+        if len(named) != 1:
+            continue
+        level = len(line) - len(line.lstrip("#"))
+        end = len(lines)
+        for next_index, next_line in heads[position + 1:]:
+            if len(next_line) - len(next_line.lstrip("#")) <= level:
+                end = next_index
+                break
+        bodies[named.pop()] = (index + 1, "\n".join(lines[index + 1:end]))
+    return bodies
+
+
 def check(en_path: Path, fr_path: Path) -> int:
     english = en_path.read_text(encoding="utf-8")
     french = fr_path.read_text(encoding="utf-8")
@@ -155,6 +186,33 @@ def check(en_path: Path, fr_path: Path) -> int:
                     f"{en_path.name}:{en_line} and {fr_path.name}:{fr_line} — {detail}."
                 )
 
+    # 4. The body of every rule written out in full, not only its table row.
+    en_bodies = rule_bodies(english)
+    fr_bodies = rule_bodies(french)
+
+    for rule in sorted(set(en_bodies) | set(fr_bodies)):
+        if rule not in en_bodies or rule not in fr_bodies:
+            present, missing = (en_path, fr_path) if rule in en_bodies else (fr_path, en_path)
+            problems.append(
+                f"{rule}: written out in full in {present.name}, nowhere in {missing.name}."
+            )
+            continue
+        en_line, en_body = en_bodies[rule]
+        fr_line, fr_body = fr_bodies[rule]
+        en_modals = count_modals(en_body, ENGLISH_MODALS)
+        fr_modals = count_modals(fr_body, FRENCH_MODALS)
+        if en_modals != fr_modals:
+            detail = ", ".join(
+                f"{level}: {en_modals.get(level, 0)} vs {fr_modals.get(level, 0)}"
+                for level in ("MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY")
+                if en_modals.get(level, 0) != fr_modals.get(level, 0)
+            )
+            problems.append(
+                f"{rule}: obligations differ in the rule's own body, between "
+                f"{en_path.name}:{en_line} and {fr_path.name}:{fr_line} — {detail}. "
+                f"An obligation was weakened, strengthened or dropped in one language."
+            )
+
     if problems:
         print(f"{len(problems)} divergence(s) between {en_path.name} and {fr_path.name}:\n")
         for problem in problems:
@@ -166,10 +224,13 @@ def check(en_path: Path, fr_path: Path) -> int:
         return 1
 
     rules = len(set(en_rows) | set(fr_rows))
+    rows = sum(len(v) for v in en_rows.values())
     print(
         f"{en_path.name} and {fr_path.name} agree structurally: "
         f"{len(en_occurrences)} rule mentions in the same order, "
-        f"{rules} rules with the same principle and the same obligations."
+        f"{rows} table rows over {rules} rules with the same principle and the same "
+        f"obligations, and {len(en_bodies)} rule body/bodies counted obligation by "
+        f"obligation."
     )
     print(
         "Structure only: this check cannot see a difference of meaning between "

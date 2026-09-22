@@ -115,6 +115,65 @@ class Parity(unittest.TestCase):
         self.assertIn("cannot see a difference of meaning", output)
 
 
+class RuleBodies(unittest.TestCase):
+    """The second fault of the follow-up review, September 2026.
+
+    Until R30 this check read table rows only. A rule written out in full — its
+    situation, its numbered obligations, its exceptions — was never compared, so
+    one DOIT could become DEVRAIT inside CONV-001 in fr.md and the check stayed
+    green. These tests plant that defect and require it to be seen.
+    """
+
+    def setUp(self):
+        self.english = (REPO_ROOT / "en.md").read_text(encoding="utf-8")
+        self.french = (REPO_ROOT / "fr.md").read_text(encoding="utf-8")
+
+    def run_on(self, english: str, french: str):
+        with tempfile.TemporaryDirectory() as workspace:
+            en = Path(workspace) / "en.md"
+            fr = Path(workspace) / "fr.md"
+            en.write_text(english, encoding="utf-8")
+            fr.write_text(french, encoding="utf-8")
+            output = io.StringIO()
+            with redirect_stdout(output):
+                code = parity.check(en, fr)
+            return code, output.getvalue()
+
+    def test_the_texts_as_they_stand_are_the_witness(self):
+        code, output = self.run_on(self.english, self.french)
+        self.assertEqual(0, code, output)
+        self.assertIn("rule body", output)
+
+    def test_an_obligation_weakened_in_a_rule_body_is_caught(self):
+        french = self.french.replace(
+            "Le LLM DOIT interpréter la réponse comme un choix de l'option 1.",
+            "Le LLM DEVRAIT interpréter la réponse comme un choix de l'option 1.",
+        )
+        self.assertNotEqual(french, self.french, "the sentence to weaken was not found")
+        code, output = self.run_on(self.english, french)
+        self.assertEqual(1, code)
+        self.assertIn("obligations differ in the rule's own body", output)
+        self.assertIn("MUST: 5 vs 4", output)
+
+    def test_an_obligation_dropped_from_a_rule_body_is_caught(self):
+        french = self.french.replace(
+            "3. Le LLM NE DOIT PAS reposer la même question.\n", "", 1
+        )
+        self.assertNotEqual(french, self.french)
+        code, output = self.run_on(self.english, french)
+        self.assertEqual(1, code)
+        self.assertIn("MUST NOT", output)
+
+    def test_a_rule_written_out_in_only_one_language_is_caught(self):
+        english = self.english.replace(
+            "## Part A — CONV-001, non-discriminating answer to an alternative",
+            "## Part A — an answer that does not choose",
+        )
+        code, output = self.run_on(english, self.french)
+        self.assertEqual(1, code)
+        self.assertIn("written out in full", output)
+
+
 class TheseTexts(unittest.TestCase):
     def test_the_published_texts_agree(self):
         code = parity.check(REPO_ROOT / "en.md", REPO_ROOT / "fr.md")
