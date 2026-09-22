@@ -1,6 +1,6 @@
 # rimi. — Open Convention for Conversational Reliability of LLMs
 
-Version 0.3.0 · 17 September 2026 · Hiram
+Version 0.3.1 · 22 September 2026 · Hiram
 
 *Reference text. An official French translation is available in [fr.md](fr.md).*
 

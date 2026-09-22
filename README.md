@@ -13,7 +13,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg" alt="License: CC0-1.0"></a>
-  <img src="https://img.shields.io/badge/version-0.3.0-blue" alt="Version 0.3.0">
+  <img src="https://img.shields.io/badge/version-0.3.1-blue" alt="Version 0.3.1">
   <img src="https://img.shields.io/badge/status-draft-orange" alt="Status: draft">
   <a href="https://doi.org/10.5281/zenodo.22814989"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.22814989.svg" alt="DOI 10.5281/zenodo.22814989"></a>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/green-friendly-dark.svg"><img src="assets/green-friendly-light.svg" alt="green friendly" height="28"></picture>
@@ -39,7 +39,7 @@ Method, intervals and raw transcripts: [rimi.tests](https://github.com/rimi-ai/r
 
 ---
 
-**Contents:** [Ask your assistant](#ask-your-assistant) · [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.0](#what-is-inside-v030) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Prior art](PRIOR-ART.md) · [Français](#français)
+**Contents:** [Ask your assistant](#ask-your-assistant) · [What this is](#what-this-is) · [The "yes" example](#the-yes-example) · [What is inside v0.3.1](#what-is-inside-v031) · [Machine-readable version](#machine-readable-version) · [Conformance levels](#conformance-levels) · [Rule lifecycle](#rule-lifecycle) · [Honest scope](#honest-scope) · [How to take part](#how-to-take-part) · [Licence](#licence) · [How to cite](#how-to-cite) · [Origin](#origin) · [Prior art](PRIOR-ART.md) · [Français](#français)
 
 ## What this is
 
@@ -58,7 +58,7 @@ This repository holds a growing set of such conventions: short, testable rules t
 | --- | --- |
 | **Assistant:** Option 1, direct flight at 2 pm, or option 2, 9-hour stopover?<br>**User:** Yes.<br>**Assistant:** *guesses one of the two, or asks the same question again, and again.* | **Assistant:** Option 1, direct flight at 2 pm, or option 2, 9-hour stopover?<br>**User:** Yes.<br>**Assistant:** I'm going with option 1. Say 2 if you preferred the other one. |
 
-## What is inside v0.3.0
+## What is inside v0.3.1
 
 | Part | Content | Status |
 | --- | --- | --- |
@@ -73,7 +73,7 @@ The [test protocol](en.md#test-protocol) fixes what is run, how many times and w
 
 ## Machine-readable version
 
-Every release publishes `convention.json`, the projection of the text for tools: each rule with its type, status, wave, obligations and the fingerprint of its own text. Latest version at <https://rimi-ai.github.io/rimi.convention/convention.json>, frozen per version at `…/versions/v0.3.0/convention.json`, and attached to each [release](../../releases).
+Every release publishes `convention.json`, the projection of the text for tools: each rule with its type, status, wave, obligations and the fingerprint of its own text. Latest version at <https://rimi-ai.github.io/rimi.convention/convention.json>, frozen per version at `…/versions/v0.3.1/convention.json`, and attached to each [release](../../releases).
 
 It is signed during the release, with no private key anywhere: Sigstore keyless, the identity being the release workflow itself, the signature recorded in the public Rekor log. Anyone can check it, with the `convention.json.sigstore.json` bundle attached to the release — signature, certificate and transparency-log entry in one file, naming the exact commit and ref that signed:
 
@@ -88,7 +88,7 @@ cosign verify-blob convention.json \
 
 ## Conformance levels
 
-Conformance levels, inspired by WCAG: **A · AA · AAA** for reliability, plus a separate frugality indicator **S1 · S2 · S3**. Example claim: `rimi. AA · S2 (v0.3.0)`.
+Conformance levels, inspired by WCAG: **A · AA · AAA** for reliability, plus a separate frugality indicator **S1 · S2 · S3**. Example claim: `rimi. AA · S2 (v0.3.1)`.
 
 | Reliability | Requirement |
 | --- | --- |
@@ -143,7 +143,7 @@ Logo and badges composed with [Geist](https://github.com/vercel/geist-font) (SIL
 
 See [CITATION.cff](CITATION.cff).
 
-> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.3.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
+> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.3.1. Zenodo. https://doi.org/10.5281/zenodo.22814989
 
 This DOI always resolves to the latest version. Each version also has its own DOI on Zenodo.
 
@@ -180,7 +180,7 @@ Méthode, intervalles et transcriptions brutes : [rimi.tests](https://github.com
 
 *rimi. se lit « rimi dot ».* · green friendly
 
-**Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.0](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine) · [Travaux antérieurs](PRIOR-ART.md)
+**Sommaire :** [Demandez à votre assistant](#fr-assistant) · [En bref](#fr-en-bref) · [L'exemple du « oui »](#fr-oui) · [Contenu de la v0.3.1](#fr-contenu) · [Version lisible par machine](#fr-machine) · [Niveaux de conformité](#fr-niveaux) · [Cycle de vie des règles](#fr-cycle) · [Participer](#fr-participer) · [Licence](#fr-licence) · [Citer](#fr-citer) · [Origine](#fr-origine) · [Travaux antérieurs](PRIOR-ART.md)
 
 <a id="fr-en-bref"></a>
 ### En bref
@@ -200,7 +200,7 @@ Un utilisateur répond « oui » à la question « option 1 ou option 2 ? ». Pl
 | **Assistant :** Option 1, vol direct à 14h, ou option 2, escale de 9h ?<br>**Utilisateur :** Oui.<br>**Assistant :** *devine l'une des deux, ou repose la même question, encore et encore.* | **Assistant :** Option 1, vol direct à 14h, ou option 2, escale de 9h ?<br>**Utilisateur :** Oui.<br>**Assistant :** Je retiens l'option 1. Dites 2 si vous préfériez l'autre. |
 
 <a id="fr-contenu"></a>
-### Contenu de la v0.3.0
+### Contenu de la v0.3.1
 
 | Partie | Contenu | Statut |
 | --- | --- | --- |
@@ -216,7 +216,7 @@ Le [protocole de test](fr.md#protocole-de-test) fixe ce qui est exécuté, combi
 <a id="fr-machine"></a>
 ### Version lisible par machine
 
-Chaque version publie `convention.json`, la projection du texte à l'usage des outils : chaque règle avec son type, son statut, son lot, ses obligations et l'empreinte de son propre texte. Dernière version sur <https://rimi-ai.github.io/rimi.convention/convention.json>, version figée sur `…/versions/v0.3.0/convention.json`, et fichier joint à chaque [release](../../releases).
+Chaque version publie `convention.json`, la projection du texte à l'usage des outils : chaque règle avec son type, son statut, son lot, ses obligations et l'empreinte de son propre texte. Dernière version sur <https://rimi-ai.github.io/rimi.convention/convention.json>, version figée sur `…/versions/v0.3.1/convention.json`, et fichier joint à chaque [release](../../releases).
 
 Il est signé pendant la publication, sans aucune clé privée : Sigstore en mode keyless, l'identité étant le workflow de release lui-même, la signature inscrite dans le journal public Rekor. N'importe qui peut la vérifier, avec le fichier `convention.json.sigstore.json` joint à la release — signature, certificat et preuve d'inscription au journal en un seul fichier, qui nomme le commit et la référence exacts ayant signé :
 
@@ -232,7 +232,7 @@ cosign verify-blob convention.json \
 <a id="fr-niveaux"></a>
 ### Niveaux de conformité
 
-Niveaux de conformité inspirés des WCAG : **A · AA · AAA** pour la fiabilité, et un indicateur de sobriété distinct **S1 · S2 · S3**. Exemple de déclaration : `rimi. AA · S2 (v0.3.0)`.
+Niveaux de conformité inspirés des WCAG : **A · AA · AAA** pour la fiabilité, et un indicateur de sobriété distinct **S1 · S2 · S3**. Exemple de déclaration : `rimi. AA · S2 (v0.3.1)`.
 
 | Fiabilité | Exigence |
 | --- | --- |
@@ -281,7 +281,7 @@ Logo et badges composés avec [Geist](https://github.com/vercel/geist-font) (SIL
 
 Voir [CITATION.cff](CITATION.cff).
 
-> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.3.0. Zenodo. https://doi.org/10.5281/zenodo.22814989
+> Hiram (2026). *rimi. — Open Convention for Conversational Reliability of LLMs*, version 0.3.1. Zenodo. https://doi.org/10.5281/zenodo.22814989
 
 Ce DOI renvoie toujours à la dernière version. Chaque version a aussi son propre DOI sur Zenodo.
 
@@ -292,4 +292,4 @@ La méthode vient d'audits de prompts en production, lus comme des textes normat
 
 **Le nom.** *rimi.* se lit « rimi dot », dans toutes les langues. C'est l'abréviation de *Ri's midot* — les mesures, ou règles, de Rabbi Ishmael, dont les treize principes herméneutiques énoncent comment se lit un texte normatif : ce qu'il exige, ce qu'il laisse non dit, où deux règles se heurtent, où un mot est trop vague pour s'appliquer. Cette convention fait la même lecture sur un autre genre de texte, un prompt système, et elle ne prétend à rien de plus. Aucune règle ne dépend de l'origine du nom.
 
-Version 0.3.0, brouillon. La fiabilité passe avant la sobriété.
+Version 0.3.1, brouillon. La fiabilité passe avant la sobriété.

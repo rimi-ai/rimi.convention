@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import io
 import json
+import re
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -175,6 +176,12 @@ if __name__ == "__main__":
     unittest.main()
 
 
+# Read from the text, never hard-coded: a test that bakes in the current version
+# tests the version, not the tool, and breaks the day the version is raised.
+VERSION = re.search(r"^Version (\d+\.\d+\.\d+)", SOURCE.read_text(encoding="utf-8"), re.M).group(1)
+TAG = f"v{VERSION}"
+
+
 class FrozenCopyDiscipline(unittest.TestCase):
     """A file published with a release is never rewritten by a later build.
 
@@ -197,7 +204,7 @@ class FrozenCopyDiscipline(unittest.TestCase):
             "-c", "user.email=test@example.invalid", "-c", "user.name=test",
             "commit", "--quiet", "-m", "text",
         )
-        self.git("tag", "v0.3.0")  # the version this text declares: it is released
+        self.git("tag", TAG)  # the version this text declares: it is released
 
         for name, value in (
             ("REPO_ROOT", self.repo),
@@ -209,7 +216,7 @@ class FrozenCopyDiscipline(unittest.TestCase):
             patcher.start()
             self.addCleanup(patcher.stop)
 
-        self.frozen = self.repo / "versions" / "v0.3.0" / "convention.json"
+        self.frozen = self.repo / "versions" / TAG / "convention.json"
 
     def git(self, *arguments: str):
         import subprocess
@@ -249,7 +256,7 @@ class FrozenCopyDiscipline(unittest.TestCase):
         code, output = self.run_tool("--freeze")
         self.assertEqual(2, code)
         self.assertIn("already released", output)
-        self.assertIn("gh release download v0.3.0", output)
+        self.assertIn(f"gh release download {TAG}", output)
         self.assertIn("shallow clone it protects nothing", output)
         self.assertEqual(published, self.frozen.read_bytes())
 
@@ -258,7 +265,7 @@ class FrozenCopyDiscipline(unittest.TestCase):
         self.frozen.write_text("{}", encoding="utf-8")
         code, _ = self.run_tool("--freeze", "--force")
         self.assertEqual(0, code)
-        self.assertEqual("0.3.0", json.loads(self.frozen.read_text(encoding="utf-8"))["convention_version"])
+        self.assertEqual(VERSION, json.loads(self.frozen.read_text(encoding="utf-8"))["convention_version"])
 
     def test_check_agrees_with_the_tag_check_after_a_correct_repair(self):
         """The fault R11 demonstrated: after the right repair, both checks say the same thing."""
@@ -288,7 +295,7 @@ class FrozenCopyDiscipline(unittest.TestCase):
     def test_check_still_requires_the_copy_of_an_unreleased_version(self):
         source = self.repo / "en.md"
         source.write_text(
-            source.read_text(encoding="utf-8").replace("Version 0.3.0 ·", "Version 0.4.0 ·", 1),
+            source.read_text(encoding="utf-8").replace(f"Version {VERSION} ·", "Version 9.9.9 ·", 1),
             encoding="utf-8",
         )
         self.run_tool()

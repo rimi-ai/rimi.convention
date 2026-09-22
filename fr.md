@@ -1,6 +1,6 @@
 # rimi. — Convention ouverte de fiabilité conversationnelle des LLM
 
-Version 0.3.0 · 17 septembre 2026 · Hiram
+Version 0.3.1 · 22 septembre 2026 · Hiram
 
 *Traduction officielle. Le texte de référence est la version anglaise ([en.md](en.md)).*
 

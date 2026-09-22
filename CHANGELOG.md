@@ -4,6 +4,16 @@ All notable changes to the convention are listed here. Versions follow [GOVERNAN
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-09-22
+
+Patch. **No obligation changed**: the diff against 0.3.0 touches the observed-drift column and nothing else, and that was checked cell by cell before the version was raised.
+
+### Changed
+
+- Four real cases added, each verified against a primary trace rather than against a lesson written after the fact: CONV-015, CONV-016, CONV-027, CONV-030. Four other candidates were dropped for want of such a trace, one of them because its own source retracted the claim.
+- Two predictions that sat in the observed-drift column are now marked as predictions (CONV-007, CONV-011). A column of observed drifts should not carry what has not been observed.
+- The frozen-copy check verifies content, not only the fingerprint: it rebuilds each published version from the text of its own tag and compares field by field. A fingerprint answers for the text, and the text does not move — an obligation edited inside a published copy left it untouched. Found in a follow-up external review, with the translation check, which now also reads the body of every rule written out in full and not only its table rows.
+
 ### Added
 
 - `convention.json`, the machine-readable projection of en.md: every rule with its type, status, wave, principle, obligations and the fingerprint of its text, plus the levels and the test-protocol thresholds. Rebuilt and checked on every change, signed at each release without any private key (Sigstore keyless, provenance attestation), published at <https://rimi-ai.github.io/rimi.convention/convention.json> and frozen per version under `versions/`.

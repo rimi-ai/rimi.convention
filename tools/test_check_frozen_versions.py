@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import re
 import subprocess
 import tempfile
 import unittest
@@ -27,8 +28,12 @@ BUILDER = REPO_ROOT / "tools" / "build_convention_json.py"
 
 # The tag's text has to be text the builder can project: since R30 the check
 # rebuilds it and compares the result, so a placeholder would prove nothing.
-TAG = "v0.3.0"
 TEXT_AT_TAG = (REPO_ROOT / "en.md").read_text(encoding="utf-8")
+# The tag is read from the text, never hard-coded: these tests must not break
+# the day the version is raised — they would then be testing the version, not
+# the check. R31 raised it to 0.3.1 and seven of them broke; hence this line.
+VERSION = re.search(r"^Version (\d+\.\d+\.\d+)", TEXT_AT_TAG, re.M).group(1)
+TAG = f"v{VERSION}"
 TEXT_AFTER = TEXT_AT_TAG.replace(
     "These thirty-four rules come from drifts observed in production",
     "These thirty-four rules come from drifts observed in production, quietly reworded",
@@ -74,7 +79,7 @@ class FrozenCopies(unittest.TestCase):
             ["git", "-C", str(self.repo), *arguments], check=True, capture_output=True
         )
 
-    def freeze(self, text: str, version: str = "0.3.0", tag: str = TAG):
+    def freeze(self, text: str, version: str = VERSION, tag: str = TAG):
         path = self.repo / "versions" / tag / "convention.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(frozen_document(text, version), encoding="utf-8")
@@ -98,7 +103,7 @@ class FrozenCopies(unittest.TestCase):
         self.freeze(TEXT_AFTER)  # what an ordinary build does today
         code, output = self.run_check()
         self.assertEqual(1, code)
-        self.assertIn("no longer projects the text published at v0.3.0", output)
+        self.assertIn(f"no longer projects the text published at {TAG}", output)
         self.assertIn("gh release download", output)  # the repair is spelled out
 
     def test_an_obligation_edited_inside_the_frozen_copy_is_caught(self):
@@ -124,7 +129,7 @@ class FrozenCopies(unittest.TestCase):
 
         code, output = self.run_check()
         self.assertEqual(1, code, output)
-        self.assertIn("is not what the text at v0.3.0 projects", output)
+        self.assertIn(f"is not what the text at {TAG} projects", output)
         self.assertIn("obligations[0].level: rebuilt 'MUST', frozen copy 'SHOULD'", output)
 
     def test_a_rule_dropped_from_the_frozen_copy_is_caught(self):
@@ -137,7 +142,7 @@ class FrozenCopies(unittest.TestCase):
         self.assertIn("entries rebuilt", output)
 
     def test_a_version_that_contradicts_its_folder_is_caught(self):
-        self.freeze(TEXT_AT_TAG, version="0.3.1")
+        self.freeze(TEXT_AT_TAG, version="9.9.9")
         code, output = self.run_check()
         self.assertEqual(1, code)
         self.assertIn("inside a folder named", output)

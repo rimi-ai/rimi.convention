@@ -4,8 +4,8 @@ title: "rimi. — Open Convention for Conversational Reliability of LLMs"
 type: dataset
 authors:
   - name: "Hiram"
-version: "0.3.0"
-date-released: "2026-09-17"
+version: "0.3.1"
+date-released: "2026-09-22"
 doi: "10.5281/zenodo.22814989"
 license: CC0-1.0
 repository-code: "https://github.com/rimi-ai/rimi.convention"
